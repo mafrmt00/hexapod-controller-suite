@@ -5,6 +5,7 @@ public:
 	~CLeg(void);
 
 	int SetLength(double dLength);
+	int GetResultingLegAngle(double& dResAngle);
 	int GetSSC32String(string& sConf);
 
 protected:
@@ -21,7 +22,10 @@ private:
 
 	double m_CurrentLength;
 
+	double m_ResultingLegAngle;
+
 	int CalculateConstants(void);
 	int CalculateKneeAngle(double dLength, double& dKneeAngle);
+	int CalculateResultingLegAngle(void);
 	int SetLegParams(double dFemurLength, double dTibiaLength, double dTibiaOffset);
 };
