@@ -30,6 +30,11 @@ CLeg::~CLeg(void)
 		delete m_pKnee;
 		m_pKnee = NULL;
 	}
+	
+	if (m_DebugLevel >= DebugLevel_all)
+	{	
+		cout << "Info:  CLeg Object deleted." << endl;
+	}	
 }
 
 int CLeg::SetLegParams(double dFemurLength, double dTibiaLength, double dTibiaOffset)
@@ -81,6 +86,13 @@ int CLeg::SetLength(double dLength)
 	if (CalculateKneeAngle(dLength, dKneeAngle) >= 0)
 	{
 		iReturnValue = m_pKnee->SetAngle(dKneeAngle);
+		
+		if (iReturnValue >= 0)
+		{
+			m_CurrentLength = dLength;
+			
+			CalculateResultingLegAngle();
+		}
 	}
 	else
 	{
@@ -91,6 +103,32 @@ int CLeg::SetLength(double dLength)
 	}
 	
 	return iReturnValue;
+}
+
+int CLeg::GetResultingLegAngle(double& dResAngle)
+{
+	dResAngle = m_ResultingLegAngle;
+	return 0;
+}
+
+int CLeg::CalculateResultingLegAngle(void)
+{
+	double dCosineAngle = 0;
+	
+	dCosineAngle += pow(m_CurrentLength, 2.d);
+	dCosineAngle += pow(m_FemurLength, 2.d);
+	dCosineAngle -= pow(m_TibiDiagonal, 2.d);
+	
+	dCosineAngle /= 2 * m_CurrentLength * m_FemurLength;
+
+	m_ResultingLegAngle = acos(dCosineAngle);
+	
+	if (m_DebugLevel >= DebugLevel_all)
+	{
+		cout << "Info:  CLeg::CalculateResultingLegAngle calculated an Angle " << (m_ResultingLegAngle / M_PI) << "*PI." << endl;
+	}	
+
+	return 0;	
 }
 
 int CLeg::CalculateKneeAngle(double dLength, double& dKneeAngle)
