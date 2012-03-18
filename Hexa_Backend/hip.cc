@@ -10,22 +10,29 @@ using namespace std;
 #include "hip_sagit.h"
 #include "hip.h"
 
-CHip::CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, 
-			int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, 
-			int HipTrIOch, eServoType HipTrCurrType, double dHipTrAngleOffset, bool bHipTrInvertDir, 
+CHip::CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
+			int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dHipAngleCalibration,
+			int HipTrIOch, eServoType HipTrCurrType, double dHipTrAngleOffset, bool bHipTrInvertDir, double dHipTrAngleCalibration,
 			double dHeightOffs, double dDistanceOffs, double dSideOffs,
 			double dFemurLength, double dTibiaLength, double dTibiaOffset)
 : m_pRestLeg(NULL),
 m_pTransverseJoint(NULL),
-m_DebugLevel(DebugLevel_all)
+m_DebugLevel(DebugLevel_all),
+m_bCurrentPositionValid(false),
+m_bCurrentPosition_X(0),
+m_bCurrentPosition_Y(0),
+m_bCurrentPosition_Z(0)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
 		cout << "Info:  CHip Object created." << endl;
 	}
 	
-	m_pRestLeg = new CHipSagittal(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir,  HipSIOch, HipSCurrType, dHipSAngleOffset, bHipSInvertDir, dFemurLength, dTibiaLength, dTibiaOffset);
-	m_pTransverseJoint = new CJoint(HipTrIOch, HipTrCurrType, dHipTrAngleOffset, bHipTrInvertDir);
+	m_pRestLeg = new CHipSagittal(	KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir,  dKneeAngleCalibration,
+								HipSIOch, HipSCurrType, dHipSAngleOffset, bHipSInvertDir, dHipAngleCalibration,
+								dFemurLength, dTibiaLength, dTibiaOffset);
+	
+	m_pTransverseJoint = new CJoint(HipTrIOch, HipTrCurrType, dHipTrAngleOffset, bHipTrInvertDir, dHipTrAngleCalibration);
 	SetSagittalOffset(dHeightOffs, dDistanceOffs, dSideOffs);
 }
 
@@ -49,6 +56,87 @@ CHip::~CHip(void)
 	}		
 }
 
+int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, double dPosition_Z)
+{
+	if (bValid)
+	{
+		m_bCurrentPosition_X = dPosition_X;
+		m_bCurrentPosition_Y = dPosition_Y;
+		m_bCurrentPosition_Z = dPosition_Z;
+		
+		if (m_DebugLevel >= DebugLevel_all)
+		{	
+			cout << "Info:  CHip::StorePosition New valid Position set: X " << m_bCurrentPosition_X << "mm, Y " << m_bCurrentPosition_Y << "mm, Z " <<  m_bCurrentPosition_Z << endl;
+		}		
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_all)
+		{	
+			cout << "Info:  CHip::StorePosition Position Invalidated. " << endl;
+		}	
+	}
+	
+	m_bCurrentPositionValid = bValid;
+}
+
+int CHip::SetPosition_X(double dPosition_X)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		iReturnValue = SetPosition(dPosition_X, m_bCurrentPosition_Y, m_bCurrentPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPosition_X Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
+}
+
+int CHip::SetPosition_Y(double dPosition_Y)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		iReturnValue = SetPosition(m_bCurrentPosition_X, dPosition_Y, m_bCurrentPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPosition_Y Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
+}
+
+int CHip::SetPosition_Z(double dPosition_Z)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		iReturnValue = SetPosition(m_bCurrentPosition_X, m_bCurrentPosition_Y, dPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPosition_Z Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
+}
+
 int CHip::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
 {
 	int iReturnValue = -1;
@@ -63,12 +151,13 @@ int CHip::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z
 		{
 			if (m_pTransverseJoint->SetAngle(dTransverseAngle) >= 0)
 			{
+				StorePosition(true, dPosition_X, dPosition_Y, dPosition_Z);
 				iReturnValue = 0;
 			}
 			else
-			{
+			{				
 				if (m_DebugLevel >= DebugLevel_errors)
-				{
+				{					
 					cout << "Error:  CHip::SetPosition Angle out of Range." << endl;
 				}
 			}
@@ -156,6 +245,11 @@ int CHip::CalculateParams(double dPosition_X, double dPosition_Y, double dPositi
 	}
 	
 	return 0;
+}
+
+int CHip::FinishSSC32String(string& sConf, int iMoveTime)
+{
+	return m_pTransverseJoint->FinishSSC32String(sConf, iMoveTime);
 }
 
 int CHip::GetSSC32String(string& sConf)

@@ -9,10 +9,15 @@ class CServo
 public:
 	CServo(int IOch, eServoType CurrType);
 	CServo(int IOch, eServoType CurrType, int iOffset);
+	~CServo(void);
 	
 	int SetPulseWidth(int iPwidth);
 	int SetPulseOffset(int iOffset);
+
 	int GetSSC32String(string& sConf);
+	int FinishSSC32String(string& sConf, int iMoveTime = 0);
+
+	int SetDebugLevel(eDebugLevel NewDebugLevel);
 
 protected:
 	eDebugLevel m_DebugLevel;

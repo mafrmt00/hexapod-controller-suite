@@ -9,7 +9,9 @@ using namespace std;
 #include "leg.h"
 #include "hip_sagit.h"
 
-CHipSagittal::CHipSagittal(int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dFemurLength, double dTibiaLength, double dTibiaOffset)
+CHipSagittal::CHipSagittal(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
+						int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir,  double dHipAngleCalibration,
+						double dFemurLength, double dTibiaLength, double dTibiaOffset)
 : m_pHipSagitJoint(NULL),
 m_pLeg(NULL),
 m_DebugLevel(DebugLevel_all)
@@ -19,8 +21,8 @@ m_DebugLevel(DebugLevel_all)
 		cout << "Info:  CHipSagittal new Object generated." << endl;
 	}
 	
-	m_pHipSagitJoint = new CJoint( HipSIOch, HipSCurrType, dHipSAngleOffset,  bHipSInvertDir);
-	m_pLeg = new CLeg( KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dFemurLength, dTibiaLength, dTibiaOffset);
+	m_pHipSagitJoint = new CJoint( HipSIOch, HipSCurrType, dHipSAngleOffset,  bHipSInvertDir, dHipAngleCalibration);
+	m_pLeg = new CLeg( KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dKneeAngleCalibration, dFemurLength, dTibiaLength, dTibiaOffset);
 }
 
 CHipSagittal::~CHipSagittal(void)

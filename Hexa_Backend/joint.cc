@@ -8,9 +8,11 @@ using namespace std;
 #include "servo.h"
 #include "joint.h"
 
-CJoint::CJoint(int IOch, eServoType CurrType, double dAngleOffset, bool bInvertDir)
+CJoint::CJoint(int IOch, eServoType CurrType, double dAngleOffset, bool bInvertDir, double dAngleCalibration)
 : CServo(IOch, CurrType),
-m_bIvertRotDirection(false)
+m_bIvertRotDirection(false),
+m_dAngleCalibration(0.d),
+m_dAngleOffset(0)
 {
 	m_bIvertRotDirection = bInvertDir;
 	
@@ -19,7 +21,15 @@ m_bIvertRotDirection(false)
 		cout << "Info:  CJoint new Object generated." << endl;
 	}
 	
-	SetAngleOffset	(dAngleOffset);
+	if (dAngleOffset != 0.d)
+	{
+		SetAngleOffset	(dAngleOffset);
+	}
+	
+	if (dAngleCalibration != 0.d)
+	{
+		SetAngleCalibration(dAngleCalibration);
+	}
 }
 
 int CJoint::InvertAngle(double dAngleSource, double& dAngleTarget)
@@ -55,6 +65,12 @@ int CJoint::RadToPulse(double dAngleSource, int& iPulseWidth)
 	else
 	{
 		dAngle = dAngleSource;
+	}
+	
+	if (m_dAngleCalibration != 0.d)
+	{
+		dAngle += m_dAngleCalibration;
+		dAngle = fmod ( dAngle,  M_PI * 2.d);	
 	}
 		
 	if (((dAngle >= 0.d) && (dAngle <= (M_PI / 2.d))) || (( dAngle <= (2.d * M_PI) ) && ( dAngle >= ((3.d * M_PI)  / 2.d))))
@@ -116,6 +132,16 @@ int CJoint::RadToPulse(double dAngleSource, int& iPulseWidth)
 	return iReturnValue;
 }
 
+int CJoint::SetAngleCalibration(double dOffset)
+{
+	if (m_DebugLevel >= DebugLevel_all)
+	{	
+		cout << "Info:  CJoint::SetAngleCalibration new Offset set:" << (dOffset / M_PI) << "*PI."<< endl;
+	}	
+	
+	m_dAngleCalibration = fmod ( dOffset,  M_PI * 2.d);
+}
+
 int CJoint::SetAngleOffset(double dOffset)
 {
 	if (m_DebugLevel >= DebugLevel_all)
@@ -148,4 +174,11 @@ int CJoint::SetAngle(double dAngle)
 	}
 	
 	return iReturnValue;
+}
+
+int CJoint::SetDebugLevel(eDebugLevel NewDebugLevel)
+{
+	CServo::SetDebugLevel(NewDebugLevel);
+	m_DebugLevel = NewDebugLevel;
+	return 0;
 }

@@ -1,12 +1,17 @@
 class CLeg
 {
 public:
-	CLeg(int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir = false, double dFemurLength = 76.d, double dTibiaLength = 95.d, double dTibiaOffset = 44.d);		
+	CLeg(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dAngleCalibration,
+			double dFemurLength, double dTibiaLength, double dTibiaOffset);		
 	~CLeg(void);
 
 	int SetLength(double dLength);
 	int GetResultingLegAngle(double& dResAngle);
+
 	int GetSSC32String(string& sConf);
+	int FinishSSC32String(string& sConf, int iMoveTime = 0);
+
+	int SetDebugLevel(eDebugLevel NewDebugLevel);
 
 protected:
 	eDebugLevel m_DebugLevel;

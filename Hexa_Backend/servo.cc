@@ -37,6 +37,14 @@ m_PulseWidth_Offset(0)
 	SetPulseOffset(iOffset);
 }
 
+CServo::~CServo(void)
+{
+	if (m_DebugLevel >= DebugLevel_all)
+	{	
+		cout << "Info:  CServo Object deleted." << endl;
+	}
+}
+
 int CServo::SetPulseOffset(int iOffset) // Problem with extended range, nonlinear range.
 {
 	m_PulseWidth_Offset = iOffset;
@@ -128,7 +136,7 @@ int CServo::SetPulseWidth(int iPwidth)
 	{
 		if (m_DebugLevel >= DebugLevel_errors)
 		{
-			cout << "Error: CServo::SetPulseWidth out of Range." << endl;
+			std::cout << "Error: CServo::SetPulseWidth out of Range." << endl;
 		}
 	}
 	
@@ -173,5 +181,51 @@ int CServo::GetSSC32String(string& sConf)
 	
 	sConf += sNewCommandSet;
 	
+	return 0;
+}
+
+int CServo::FinishSSC32String(string& sConf, int iMoveTime)
+{
+	string sNewCommandSet = "";
+	
+	if (m_bBinaryCommands)
+	{
+		string sNewCommand;
+		
+		sNewCommand = char(m_IOchannel + 0xA1); // Move Time
+		sNewCommandSet += sNewCommand;
+		
+		sNewCommand = char((iMoveTime & 0xFF00) >> 8); // Pulse Width MSB
+		sNewCommandSet += sNewCommand;
+		
+		sNewCommand = char(iMoveTime & 0xFF); // Pulse Width LSB
+		sNewCommandSet += sNewCommand;		
+	}
+	else
+	{
+		sNewCommandSet += "T";
+		ostringstream tmpStream00;
+		tmpStream00 << iMoveTime;
+		sNewCommandSet+= tmpStream00.str();	
+
+		if (m_DebugLevel >= DebugLevel_all)
+		{	
+			cout << "Info:  CServo::FinishSSC32String ASCII Commandstring finished with: " << sNewCommandSet << endl;
+		}
+		
+		string sCRstring = "";
+		sCRstring += char(13); 
+		
+		sNewCommandSet += sCRstring;
+	}
+	
+	sConf += sNewCommandSet;
+	
+	return 0;
+}
+
+int CServo::SetDebugLevel(eDebugLevel NewDebugLevel)
+{
+	m_DebugLevel = NewDebugLevel;
 	return 0;
 }
