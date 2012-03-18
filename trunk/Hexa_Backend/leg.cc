@@ -8,7 +8,8 @@ using namespace std;
 #include "joint.h"
 #include "leg.h"
 
-CLeg::CLeg(int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dFemurLength, double dTibiaLength, double dTibiaOffset)
+CLeg::CLeg(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir,  double dAngleCalibration,
+			double dFemurLength, double dTibiaLength, double dTibiaOffset)
 : m_pKnee(NULL),
 m_DebugLevel(DebugLevel_all)
 {
@@ -20,7 +21,7 @@ m_DebugLevel(DebugLevel_all)
 	SetLegParams(dFemurLength, dTibiaLength, dTibiaOffset);
 	CalculateConstants();
 	
-	m_pKnee = new CJoint(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir);
+	m_pKnee = new CJoint(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dAngleCalibration);
 }
 
 CLeg::~CLeg(void)
@@ -157,4 +158,17 @@ int CLeg::CalculateKneeAngle(double dLength, double& dKneeAngle)
 int CLeg::GetSSC32String(string& sConf)
 {
 	return m_pKnee->GetSSC32String(sConf);
+}
+
+int CLeg::FinishSSC32String(string& sConf, int iMoveTime)
+{
+	return m_pKnee->FinishSSC32String(sConf, iMoveTime);
+}
+
+int CLeg::SetDebugLevel(eDebugLevel NewDebugLevel)
+{
+	m_pKnee->SetDebugLevel( NewDebugLevel);
+	
+	m_DebugLevel = NewDebugLevel;
+	return 0;
 }

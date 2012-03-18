@@ -2,8 +2,8 @@ class CHipSagittal
 {
 	
 public:
-	CHipSagittal(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, 
-				int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, 
+	CHipSagittal(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
+				int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dHipAngleCalibration,
 				double dFemurLength, double dTibiaLength, double dTibiaOffset);
 	~CHipSagittal(void);
 
