@@ -1,0 +1,9 @@
+!SESSION 2012-12-06 09:09:59.243 -----------------------------------------------
+eclipse.buildId=I20110613-1736
+java.version=1.6.0_24
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86
+
+!ENTRY org.eclipse.cdt.core 1 0 2012-12-06 09:10:33.660
+!MESSAGE Indexed 'Hexa_Backend' (7 sources, 200 headers) in 3.47 sec: 13,227 declarations; 22,226 references; 0 unresolved inclusions; 65 syntax errors; 118 unresolved names (0.33%)

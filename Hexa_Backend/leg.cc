@@ -56,16 +56,16 @@ int CLeg::CalculateConstants(void)
 {
 	double dSquareLen = 0;
 	
-	dSquareLen += pow(m_TibiaLength, 2.d);
-	dSquareLen += pow(m_TibiaOffset, 2.d);
+	dSquareLen += pow(m_TibiaLength, 2.0);
+	dSquareLen += pow(m_TibiaOffset, 2.0);
 	
 	m_TibiDiagonal = sqrt(dSquareLen);
 	
 	double dCosineAngle = 0;
 	
 	dCosineAngle += dSquareLen;
-	dCosineAngle += pow(m_TibiaLength, 2.d);
-	dCosineAngle -=  pow(m_TibiaOffset, 2.d);
+	dCosineAngle += pow(m_TibiaLength, 2.0);
+	dCosineAngle -=  pow(m_TibiaOffset, 2.0);
 	
 	dCosineAngle /= 2 * m_TibiaLength * m_TibiDiagonal;
 	
@@ -116,9 +116,9 @@ int CLeg::CalculateResultingLegAngle(void)
 {
 	double dCosineAngle = 0;
 	
-	dCosineAngle += pow(m_CurrentLength, 2.d);
-	dCosineAngle += pow(m_FemurLength, 2.d);
-	dCosineAngle -= pow(m_TibiDiagonal, 2.d);
+	dCosineAngle += pow(m_CurrentLength, 2.0);
+	dCosineAngle += pow(m_FemurLength, 2.0);
+	dCosineAngle -= pow(m_TibiDiagonal, 2.0);
 	
 	dCosineAngle /= 2 * m_CurrentLength * m_FemurLength;
 
@@ -136,9 +136,9 @@ int CLeg::CalculateKneeAngle(double dLength, double& dKneeAngle)
 {
 	double dCosineAngle = 0;
 	
-	dCosineAngle += pow(m_FemurLength, 2.d);
-	dCosineAngle += pow(m_TibiDiagonal, 2.d);
-	dCosineAngle -= pow(dLength, 2.d);
+	dCosineAngle += pow(m_FemurLength, 2.0);
+	dCosineAngle += pow(m_TibiDiagonal, 2.0);
+	dCosineAngle -= pow(dLength, 2.0);
 	
 	
 	dCosineAngle /= 2 * m_FemurLength * m_TibiDiagonal;

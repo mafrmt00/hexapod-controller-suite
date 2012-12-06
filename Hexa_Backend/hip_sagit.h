@@ -10,13 +10,13 @@ public:
 	int SetPosition(double dDistance, double dHeight);
 	int GetSSC32String(string& sConf);
 
-protected:
-	eDebugLevel m_DebugLevel;
-
 private:
-	CLeg* m_pLeg;
 	CJoint* m_pHipSagitJoint;
+	CLeg* m_pLeg;
+
 
 	int CalculateParams(double dDistance, double dHeight, double& dLegLen, double& dHipAng);
-	
+
+protected:
+	eDebugLevel m_DebugLevel;
 };

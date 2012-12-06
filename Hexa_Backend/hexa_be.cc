@@ -18,29 +18,29 @@ using namespace std;
 #include "hip.h"
 #include "hipgroup.h"
 
-#define CALIBRATION_SERVO_24 (0.022817d * M_PI)
-#define CALIBRATION_SERVO_25 (1.97135d * M_PI)
-#define CALIBRATION_SERVO_26 (1.9427d * M_PI)
+#define CALIBRATION_SERVO_24 (0.022817 * M_PI)
+#define CALIBRATION_SERVO_25 (1.97135 * M_PI)
+#define CALIBRATION_SERVO_26 (1.9427 * M_PI)
 
-#define CALIBRATION_SERVO_20 (0.0d * M_PI)
-#define CALIBRATION_SERVO_21 (1.95862d * M_PI)
-#define CALIBRATION_SERVO_22 (1.97454d * M_PI)
+#define CALIBRATION_SERVO_20 (0.0 * M_PI)
+#define CALIBRATION_SERVO_21 (1.95862 * M_PI)
+#define CALIBRATION_SERVO_22 (1.97454 * M_PI)
 
-#define CALIBRATION_SERVO_16 (1.95862d * M_PI)
-#define CALIBRATION_SERVO_17 (1.97135d * M_PI)
-#define CALIBRATION_SERVO_18 (1.97454d * M_PI)
+#define CALIBRATION_SERVO_16 (1.95862 * M_PI)
+#define CALIBRATION_SERVO_17 (1.97135 * M_PI)
+#define CALIBRATION_SERVO_18 (1.97454 * M_PI)
 
-#define CALIBRATION_SERVO_08 (1.9618d * M_PI)
-#define CALIBRATION_SERVO_09 (0.0031831d * M_PI)
-#define CALIBRATION_SERVO_10 (1.99363d * M_PI)
+#define CALIBRATION_SERVO_08 (1.9618 * M_PI)
+#define CALIBRATION_SERVO_09 (0.0031831 * M_PI)
+#define CALIBRATION_SERVO_10 (1.99363 * M_PI)
 
-#define CALIBRATION_SERVO_04 (0.0063662d * M_PI)
-#define CALIBRATION_SERVO_05 (0.0159155d * M_PI)
-#define CALIBRATION_SERVO_06 (1.99363d * M_PI)
+#define CALIBRATION_SERVO_04 (0.0063662 * M_PI)
+#define CALIBRATION_SERVO_05 (0.0159155 * M_PI)
+#define CALIBRATION_SERVO_06 (1.99363 * M_PI)
 
-#define CALIBRATION_SERVO_00 (1.99682d * M_PI)
-#define CALIBRATION_SERVO_01 (1.9809d * M_PI)
-#define CALIBRATION_SERVO_02 (1.99682d * M_PI)
+#define CALIBRATION_SERVO_00 (1.99682 * M_PI)
+#define CALIBRATION_SERVO_01 (1.9809 * M_PI)
+#define CALIBRATION_SERVO_02 (1.99682 * M_PI)
 
 #define SERVO_MOVE_TIME 300
 
@@ -63,31 +63,31 @@ void testbench(void)
 	CHipGroup* pRearBugSide = new CHipGroup;
 	CHipGroup* pWholeBug = new CHipGroup;
 
-	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.d), 	true, CALIBRATION_SERVO_26,  
+	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_26,
 								25, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_25,
-								24, ServoType_Normal, -(0.25d * M_PI), 	false, CALIBRATION_SERVO_24);
+								24, ServoType_Normal, -(0.25 * M_PI), 	false, CALIBRATION_SERVO_24);
 	
-	CHip* pLegLeft02 = new CHip(	22, ServoType_Normal, -(M_PI / 2.d), 	true, CALIBRATION_SERVO_22,  
+	CHip* pLegLeft02 = new CHip(	22, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_22,
 								21, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_21,
-								20, ServoType_Normal, -(0.5d * M_PI),	false, CALIBRATION_SERVO_20);	
+								20, ServoType_Normal, -(0.5 * M_PI),	false, CALIBRATION_SERVO_20);
 	
-	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 2.d), 	true, CALIBRATION_SERVO_18,  
+	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 0), 	true, CALIBRATION_SERVO_18,
 								17, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_17,
-								16, ServoType_Normal, -(0.75d * M_PI), 	false, CALIBRATION_SERVO_16);	
+								16, ServoType_Normal, -(0.75 * M_PI), 	false, CALIBRATION_SERVO_16);
 	
 	
 	
-	CHip* pLegRight01 = new CHip(	10, ServoType_Normal, -(M_PI / 2.d), 	false, CALIBRATION_SERVO_10,  
+	CHip* pLegRight01 = new CHip(	10, ServoType_Normal, -(M_PI / 2.0), 	false, CALIBRATION_SERVO_10,
 								9,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_09,
-								8,  ServoType_Normal, -(0.25d * M_PI), 	true, CALIBRATION_SERVO_08);	
+								8,  ServoType_Normal, -(0.25 * M_PI), 	true, CALIBRATION_SERVO_08);
 								
-	CHip* pLegRight02 = new CHip(	6, ServoType_Normal, -(M_PI / 2.d), 		false, CALIBRATION_SERVO_06,  
+	CHip* pLegRight02 = new CHip(	6, ServoType_Normal, -(M_PI / 2.0), 		false, CALIBRATION_SERVO_06,
 								5,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_05,
-								4,  ServoType_Normal, -(0.5d * M_PI),	true, CALIBRATION_SERVO_04);	
+								4,  ServoType_Normal, -(0.5 * M_PI),	true, CALIBRATION_SERVO_04);
 
-	CHip* pLegRight03 = new CHip(	2, ServoType_Normal, -(M_PI / 2.d), 		false, CALIBRATION_SERVO_02,  
+	CHip* pLegRight03 = new CHip(	2, ServoType_Normal, -(M_PI / 2.0), 		false, CALIBRATION_SERVO_02,
 								1,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_01,
-								0,  ServoType_Normal, -(0.75d * M_PI), 	true, CALIBRATION_SERVO_00);
+								0,  ServoType_Normal, -(0.75 * M_PI), 	true, CALIBRATION_SERVO_00);
 	
 	//CHipSagittal* pTestServo = new CHipSagittal(26, ServoType_Normal, -(M_PI / 2.d), true,    25, ServoType_Normal, 0, true);
 	//CLeg* pTestServo = new CLeg(26, ServoType_Normal, -(M_PI / 2.d), true);
@@ -227,7 +227,7 @@ void calibration(void)
 		
 		if (scommand == "p")
 		{
-			dServoAngle += 0.01d;
+			dServoAngle += 0.01;
 			
 			if (pServo != NULL)
 			{
@@ -238,7 +238,7 @@ void calibration(void)
 		
 		if (scommand == "m")
 		{
-			dServoAngle -= 0.01d;
+			dServoAngle -= 0.01;
 			
 			if (pServo != NULL)
 			{
@@ -249,7 +249,7 @@ void calibration(void)
 		
 		if (scommand == "c")
 		{
-			dServoAngle = 0.d;
+			dServoAngle = 0.0;
 			
 			if (pServo != NULL)
 			{
@@ -301,6 +301,7 @@ int main (int argc, char **argv)
 
 			default:
 				abort ();
+				break;
 		}
 	}
 	

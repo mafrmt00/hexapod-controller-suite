@@ -1,0 +1,42 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CC_SRCS += \
+../hexa_be.cc \
+../hip.cc \
+../hip_sagit.cc \
+../hipgroup.cc \
+../joint.cc \
+../leg.cc \
+../servo.cc 
+
+OBJS += \
+./hexa_be.o \
+./hip.o \
+./hip_sagit.o \
+./hipgroup.o \
+./joint.o \
+./leg.o \
+./servo.o 
+
+CC_DEPS += \
+./hexa_be.d \
+./hip.d \
+./hip_sagit.d \
+./hipgroup.d \
+./joint.d \
+./leg.d \
+./servo.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: ../%.cc
+	@echo 'Building file: $<'
+	@echo 'Invoking: Cross G++ Compiler'
+	arm-linux-gnueabi-gcc -O0 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-a8 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+
