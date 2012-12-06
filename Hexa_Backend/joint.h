@@ -11,9 +11,9 @@ public:
 
 private:
 	double m_dAngleCurrent;
-	double m_dAngleOffset; // Offset for Mounting and calculation purpose.
-	double m_dAngleCalibration; //Offset for zero-position calibration, is not influenced by Inversion-Flag;
 	bool m_bIvertRotDirection;
+	double m_dAngleCalibration; //Offset for zero-position calibration, is not influenced by Inversion-Flag;
+	double m_dAngleOffset; // Offset for Mounting and calculation purpose.
 
 	int SetAngleCalibration(double dOffset);
 	int RadToPulse(double dAngleSource, int& iPulseWidth);

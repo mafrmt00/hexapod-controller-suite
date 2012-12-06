@@ -16,12 +16,9 @@ public:
 	int GetSSC32String(string& sConf);
 	int FinishSSC32String(string& sConf, int iMoveTime = 0);
 
-protected:
-	eDebugLevel m_DebugLevel;
-
 private:
-	CJoint* m_pTransverseJoint;
 	CHipSagittal* m_pRestLeg;
+	CJoint* m_pTransverseJoint;
 
 	bool m_bCurrentPositionValid;
 	double m_bCurrentPosition_X;
@@ -35,4 +32,7 @@ private:
 	int StorePosition(bool bValid = false, double dPosition_X = 0.d, double dPosition_Y = 0.d, double dPosition_Z = 0.d);
 	int SetSagittalOffset(double dHeight, double dDistance, double dSide);
 	int CalculateParams(double dPosition_X, double dPosition_Y, double dPosition_Z, double& dTransverseAngle, double& dDistance, double& dHeight);
+
+protected:
+	eDebugLevel m_DebugLevel;
 };

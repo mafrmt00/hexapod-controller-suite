@@ -14,8 +14,9 @@ public:
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
 
 protected:
-	eDebugLevel m_DebugLevel;
 	CJoint* m_pKnee;
+	eDebugLevel m_DebugLevel;
+
 
 private:
 	double m_FemurLength;

@@ -17,11 +17,11 @@ CHip::CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool
 			double dFemurLength, double dTibiaLength, double dTibiaOffset)
 : m_pRestLeg(NULL),
 m_pTransverseJoint(NULL),
-m_DebugLevel(DebugLevel_all),
 m_bCurrentPositionValid(false),
 m_bCurrentPosition_X(0),
 m_bCurrentPosition_Y(0),
-m_bCurrentPosition_Z(0)
+m_bCurrentPosition_Z(0),
+m_DebugLevel(DebugLevel_all)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -78,6 +78,8 @@ int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, dou
 	}
 	
 	m_bCurrentPositionValid = bValid;
+
+	return 0;
 }
 
 int CHip::SetPosition_X(double dPosition_X)
@@ -177,6 +179,8 @@ int CHip::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z
 			cout << "Error:  CHip::SetPosition Parameter Calculation failed." << endl;
 		}		
 	}
+
+	return iReturnValue;
 }
 
 int CHip::SetSagittalOffset(double dHeight, double dDistance, double dSide)
@@ -196,12 +200,12 @@ int CHip::SetSagittalOffset(double dHeight, double dDistance, double dSide)
 int CHip::CalculateParams(double dPosition_X, double dPosition_Y, double dPosition_Z, double& dTransverseAngle, double& dDistance, double& dHeight)
 {
 	double dD1Square = 0;
-	double dD1 = 0;
+	//double dD1 = 0;
 	
 	dD1Square += pow(dPosition_X, 2);
 	dD1Square += pow(dPosition_Y, 2);
 	
-	dD1 = sqrt(dD1Square) ;
+	//dD1 = sqrt(dD1Square) ;
 	
 
 	double dLSquare = 0;
@@ -214,12 +218,12 @@ int CHip::CalculateParams(double dPosition_X, double dPosition_Y, double dPositi
 	
 	
 	double dD2Square = 0;
-	double dD2 = 0;	
+	//double dD2 = 0;
 	
 	dD2Square += dLSquare;
 	dD2Square -= pow(m_dSagittalOffset_Side, 2);
 	
-	dD2 = sqrt(dD2Square);
+	//dD2 = sqrt(dD2Square);
 	
 		
 	double dL2Square = 0;

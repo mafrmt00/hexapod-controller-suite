@@ -1,12 +1,19 @@
 #!/bin/bash
 
-pipe=/tmp/hexa_be_out
+outpipe=/tmp/hexa_be_out
+inpipe=/tmp/hexa_be_in
 
-trap "rm -f $pipe" EXIT
+trap "rm -f $outpipe" EXIT
+trap "rm -f $inpipe" EXIT
 
-if [[ ! -p $pipe ]]; then
-    mkfifo $pipe
+if [[ ! -p $inpipe ]]; then
+    mkfifo $inpipe
 fi
+
+if [[ ! -p $outpipe ]]; then
+    mkfifo $outpipe
+fi
+
 
 ./Debug/Hexa_Backend
 
