@@ -10,8 +10,8 @@ using namespace std;
 
 CServo::CServo(int IOch, eServoType CurrType)
 : m_bBinaryCommands (false),
-m_DebugLevel(DebugLevel_all),
-m_PulseWidth_Offset(0)
+m_PulseWidth_Offset(0),
+m_DebugLevel(DebugLevel_all)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -24,8 +24,8 @@ m_PulseWidth_Offset(0)
 
 CServo::CServo(int IOch, eServoType CurrType, int iOffset)
 : m_bBinaryCommands (false),
-m_DebugLevel(DebugLevel_errors),
-m_PulseWidth_Offset(0)
+m_PulseWidth_Offset(0),
+m_DebugLevel(DebugLevel_errors)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -48,6 +48,8 @@ CServo::~CServo(void)
 int CServo::SetPulseOffset(int iOffset) // Problem with extended range, nonlinear range.
 {
 	m_PulseWidth_Offset = iOffset;
+
+	return 0;
 }
 
 int CServo::SetIOchannel(int IOch)

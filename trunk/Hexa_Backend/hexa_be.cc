@@ -7,6 +7,7 @@
 #include <list>
 
 #include <unistd.h>
+#include <stddef.h>
 
 using namespace std;
 
@@ -71,7 +72,7 @@ void testbench(void)
 								21, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_21,
 								20, ServoType_Normal, -(0.5 * M_PI),	false, CALIBRATION_SERVO_20);
 	
-	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 0), 	true, CALIBRATION_SERVO_18,
+	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_18,
 								17, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_17,
 								16, ServoType_Normal, -(0.75 * M_PI), 	false, CALIBRATION_SERVO_16);
 	

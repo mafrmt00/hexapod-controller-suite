@@ -11,7 +11,7 @@ using namespace std;
 CJoint::CJoint(int IOch, eServoType CurrType, double dAngleOffset, bool bInvertDir, double dAngleCalibration)
 : CServo(IOch, CurrType),
 m_bIvertRotDirection(false),
-m_dAngleCalibration(0.d),
+m_dAngleCalibration(0.0),
 m_dAngleOffset(0)
 {
 	m_bIvertRotDirection = bInvertDir;
@@ -140,6 +140,8 @@ int CJoint::SetAngleCalibration(double dOffset)
 	}	
 	
 	m_dAngleCalibration = fmod ( dOffset,  M_PI * 2.d);
+
+	return 0;
 }
 
 int CJoint::SetAngleOffset(double dOffset)
@@ -149,7 +151,9 @@ int CJoint::SetAngleOffset(double dOffset)
 		cout << "Info:  CJoint::SetAngleOffset new Offset set:" << (dOffset / M_PI) << "*PI."<< endl;
 	}	
 	
-	m_dAngleOffset = fmod ( dOffset,  M_PI * 2.d);
+	m_dAngleOffset = fmod ( dOffset,  M_PI * 2.0);
+
+	return 0;
 }
 
 int CJoint::SetAngle(double dAngle)

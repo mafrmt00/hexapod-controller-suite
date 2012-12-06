@@ -19,19 +19,19 @@ public:
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
 
-protected:
-	eDebugLevel m_DebugLevel;
-
 private:
 	int m_IOchannel;
+
+	bool m_bBinaryCommands;
 
 	int m_PulseWidth_Current;  //Current pulsewidth
 	int m_PulseWidth_Offset;
 	int m_PulseWidth_LimitMax;
 	int m_PulseWidth_LimitMin;
 
-	bool m_bBinaryCommands;
-
 	int SetServoType(eServoType CurrType);
 	int SetIOchannel(int IOch);
+
+protected:
+	eDebugLevel m_DebugLevel;
 };
