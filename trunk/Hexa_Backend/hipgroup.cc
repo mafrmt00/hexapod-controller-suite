@@ -49,6 +49,55 @@ int CHipGroup::SetDebugLevel(eDebugLevel NewDebugLevel)
 	return 0;
 }
 
+int CHipGroup::SetPositionRel_X(double dPositionOffset_X)
+{
+	int iReturnValue = 0;
+	HipList::iterator i;
+	
+	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
+	{
+		if ((*i)->SetPositionRel_X(dPositionOffset_X) < 0)
+		{
+			iReturnValue = -1;
+		}
+	}
+	
+	return iReturnValue;
+}
+
+
+int CHipGroup::SetPositionRel_Y(double dPositionOffset_Y)
+{
+	int iReturnValue = 0;
+	HipList::iterator i;
+	
+	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
+	{
+		if ((*i)->SetPositionRel_Y(dPositionOffset_Y) < 0)
+		{
+			iReturnValue = -1;
+		}
+	}
+	
+	return iReturnValue;
+}
+
+int CHipGroup::SetPositionRel_Z(double dPositionOffset_Z)
+{
+	int iReturnValue = 0;
+	HipList::iterator i;
+	
+	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
+	{
+		if ((*i)->SetPositionRel_Z(dPositionOffset_Z) < 0)
+		{
+			iReturnValue = -1;
+		}
+	}
+	
+	return iReturnValue;
+}
+
 int CHipGroup::SetPosition_X(double dPosition_X)
 {
 	int iReturnValue = 0;

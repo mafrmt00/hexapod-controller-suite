@@ -58,6 +58,8 @@ CHip::~CHip(void)
 
 int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, double dPosition_Z)
 {
+	int iReturnValue = -1;
+
 	if (bValid)
 	{
 		m_bCurrentPosition_X = dPosition_X;
@@ -79,7 +81,70 @@ int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, dou
 	
 	m_bCurrentPositionValid = bValid;
 
-	return 0;
+	return iReturnValue;
+}
+
+int CHip::SetPositionRel_X(double dPositionOffset_X)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		m_bCurrentPosition_X += dPositionOffset_X;
+		
+		iReturnValue = SetPosition(m_bCurrentPosition_X, m_bCurrentPosition_Y, m_bCurrentPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPositionRel_X Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
+}
+
+int CHip::SetPositionRel_Y(double dPositionOffset_Y)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		m_bCurrentPosition_Y+= dPositionOffset_Y;
+		
+		iReturnValue = SetPosition(m_bCurrentPosition_X, m_bCurrentPosition_Y, m_bCurrentPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPositionRel_Y Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
+}
+
+int CHip::SetPositionRel_Z(double dPositionOffset_Z)
+{
+	int iReturnValue = -1;
+	
+	if (m_bCurrentPositionValid)
+	{
+		m_bCurrentPosition_Z+= dPositionOffset_Z;
+		
+		iReturnValue = SetPosition(m_bCurrentPosition_X, m_bCurrentPosition_Y, m_bCurrentPosition_Z);
+	}
+	else
+	{
+		if (m_DebugLevel >= DebugLevel_errors)
+		{
+			cout << "Error:  CHip::SetPositionRel_Z Not possible, current Position is invalid." << endl;
+		}		
+	}
+	
+	return iReturnValue;
 }
 
 int CHip::SetPosition_X(double dPosition_X)

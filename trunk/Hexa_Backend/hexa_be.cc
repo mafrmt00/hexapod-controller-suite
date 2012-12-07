@@ -1,3 +1,5 @@
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -7,7 +9,6 @@
 #include <list>
 
 #include <unistd.h>
-#include <stddef.h>
 
 using namespace std;
 
@@ -23,9 +24,9 @@ using namespace std;
 #define CALIBRATION_SERVO_25 (1.97135 * M_PI)
 #define CALIBRATION_SERVO_26 (1.9427 * M_PI)
 
-#define CALIBRATION_SERVO_20 (0.0 * M_PI)
-#define CALIBRATION_SERVO_21 (1.95862 * M_PI)
-#define CALIBRATION_SERVO_22 (1.97454 * M_PI)
+#define CALIBRATION_SERVO_20 (0.0d * M_PI)
+#define CALIBRATION_SERVO_21 (1.97454d * M_PI)
+#define CALIBRATION_SERVO_22 (1.97454d * M_PI)
 
 #define CALIBRATION_SERVO_16 (1.95862 * M_PI)
 #define CALIBRATION_SERVO_17 (1.97135 * M_PI)
@@ -35,15 +36,15 @@ using namespace std;
 #define CALIBRATION_SERVO_09 (0.0031831 * M_PI)
 #define CALIBRATION_SERVO_10 (1.99363 * M_PI)
 
-#define CALIBRATION_SERVO_04 (0.0063662 * M_PI)
-#define CALIBRATION_SERVO_05 (0.0159155 * M_PI)
-#define CALIBRATION_SERVO_06 (1.99363 * M_PI)
+#define CALIBRATION_SERVO_04 (0.0127324d * M_PI)
+#define CALIBRATION_SERVO_05 ( 0.0127324d * M_PI)
+#define CALIBRATION_SERVO_06 (1.98727d * M_PI)
 
 #define CALIBRATION_SERVO_00 (1.99682 * M_PI)
 #define CALIBRATION_SERVO_01 (1.9809 * M_PI)
 #define CALIBRATION_SERVO_02 (1.99682 * M_PI)
 
-#define SERVO_MOVE_TIME 300
+#define SERVO_MOVE_TIME 1000
 
 void testbench(void)
 {
@@ -63,6 +64,8 @@ void testbench(void)
 	CHipGroup* pFrontBugSide = new CHipGroup;
 	CHipGroup* pRearBugSide = new CHipGroup;
 	CHipGroup* pWholeBug = new CHipGroup;
+	CHipGroup* pTripod01 = new CHipGroup;
+	CHipGroup* pTripod02 = new CHipGroup;
 
 	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_26,
 								25, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_25,
@@ -107,6 +110,14 @@ void testbench(void)
 	pRearBugSide->AddHip(pLegLeft03);
 	pRearBugSide->AddHip(pLegRight03);	
 	
+	pTripod01->AddHip(pLegLeft01);
+	pTripod01->AddHip(pLegRight02);
+	pTripod01->AddHip(pLegLeft03);	
+	
+	pTripod02->AddHip(pLegRight01);
+	pTripod02->AddHip(pLegLeft02);
+	pTripod02->AddHip(pLegRight03);		
+	
 	#if 0	
 	pWholeBug->AddHip(pLegLeft01);
 	pWholeBug->AddHip(pLegLeft02);
@@ -141,7 +152,177 @@ void testbench(void)
 	pWholeBug->AddHip(pLegRight02);
 	pWholeBug->AddHip(pLegRight03);
 	
-	for(int i = 100; i < 150; i += 5)
+	
+	
+	sConfigS = "";
+	pLegLeft01->GetSSC32String(sConfigS);
+	pLegLeft01->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+	
+	sConfigS = "";
+	pLegLeft02->GetSSC32String(sConfigS);
+	pLegLeft02->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+	
+	sConfigS = "";
+	pLegLeft03->GetSSC32String(sConfigS);
+	pLegLeft03->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+
+	sConfigS = "";
+	pLegRight01->GetSSC32String(sConfigS);
+	pLegRight01->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+	
+	sConfigS = "";
+	pLegRight02->GetSSC32String(sConfigS);
+	pLegRight02->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+
+	sConfigS = "";
+	pLegRight03->GetSSC32String(sConfigS);
+	pLegRight03->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS;
+	SerialPort.flush();
+	sleep(1);
+	
+	if (pWholeBug->SetPositionRel_Z(25.d) >= 0)
+	{
+		//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+		sConfigS = "";
+
+		pWholeBug->GetSSC32String(sConfigS);
+		pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+		SerialPort << sConfigS;
+	
+		SerialPort.flush();
+	}
+	
+	sleep(SERVO_MOVE_TIME / 1000);
+	
+	for (int i = 0 ; i < 5 ; i++)
+	{
+		if (pWholeBug->SetPositionRel_X(20.d) >= 0)
+		{
+			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+			sConfigS = "";
+
+			pWholeBug->GetSSC32String(sConfigS);
+			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+			SerialPort << sConfigS;
+		
+			SerialPort.flush();
+		}
+		
+		sleep(SERVO_MOVE_TIME / 1000);		
+		
+		
+		if ((pTripod01->SetPositionRel_Z(-25.d) >= 0) && (pTripod01->SetPositionRel_X(-20.d) >= 0))
+		{
+			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+			sConfigS = "";
+
+			pWholeBug->GetSSC32String(sConfigS);
+			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+			SerialPort << sConfigS;
+		
+			SerialPort.flush();
+		}
+		
+	
+
+
+		
+		sleep(SERVO_MOVE_TIME / 1000);
+		
+		if (pTripod01->SetPositionRel_Z(25.d) >= 0)
+		{
+			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+			sConfigS = "";
+
+			pWholeBug->GetSSC32String(sConfigS);
+			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+			SerialPort << sConfigS;
+		
+			SerialPort.flush();
+		}
+		
+		sleep(SERVO_MOVE_TIME / 1000);		
+
+		if ((pTripod02->SetPositionRel_Z(-25.d) >= 0) && (pTripod02->SetPositionRel_X(-20.d) >= 0))
+		{
+			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+			sConfigS = "";
+
+			pWholeBug->GetSSC32String(sConfigS);
+			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+			SerialPort << sConfigS;
+		
+			SerialPort.flush();
+		}
+		
+
+		
+		sleep(SERVO_MOVE_TIME / 1000);	
+		
+		if (pTripod02->SetPositionRel_Z(25.d) >= 0)
+		{
+			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+			sConfigS = "";
+
+			pWholeBug->GetSSC32String(sConfigS);
+			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+			SerialPort << sConfigS;
+		
+			SerialPort.flush();
+		}
+		
+		sleep(SERVO_MOVE_TIME / 1000);
+		
+	
+		
+
+	}
+
+	if (pWholeBug->SetPositionRel_Z(-25.d) >= 0)
+	{
+		//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
+
+		sConfigS = "";
+
+		pWholeBug->GetSSC32String(sConfigS);
+		pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+
+		SerialPort << sConfigS;
+	
+		SerialPort.flush();
+	}
+	
+	sleep(SERVO_MOVE_TIME / 1000);	
+	#if 0
+	for(int i = 100; i < 160; i += 5)
 	{
 		if (pWholeBug->SetPosition_Z(i) >= 0)
 		{
@@ -160,7 +341,7 @@ void testbench(void)
 		sleep(1);
 	}
 	
-	for(int i = 150; i > 100; i -= 5)
+	for(int i = 160; i > 100; i -= 5)
 	{
 		if (pWholeBug->SetPosition_Z(i) >= 0)
 		{
@@ -178,6 +359,7 @@ void testbench(void)
 		
 		sleep(1);
 	}	
+	#endif
 	
 	SerialPort.close();
 
@@ -186,6 +368,8 @@ void testbench(void)
 	delete pFrontBugSide;
 	delete pRearBugSide;
 	delete pWholeBug;
+	delete pTripod01;
+	delete pTripod02;
 	
 	delete pLegLeft01;	
 	delete pLegLeft02;	

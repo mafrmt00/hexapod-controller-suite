@@ -209,16 +209,18 @@ int CServo::FinishSSC32String(string& sConf, int iMoveTime)
 		ostringstream tmpStream00;
 		tmpStream00 << iMoveTime;
 		sNewCommandSet+= tmpStream00.str();	
+		
+		sConf += sNewCommandSet;
 
 		if (m_DebugLevel >= DebugLevel_all)
 		{	
-			cout << "Info:  CServo::FinishSSC32String ASCII Commandstring finished with: " << sNewCommandSet << endl;
+			cout << "Info:  CServo::FinishSSC32String ASCII Commandstring finished : " << sConf << endl;
 		}
 		
 		string sCRstring = "";
 		sCRstring += char(13); 
 		
-		sNewCommandSet += sCRstring;
+		sConf += sCRstring;
 	}
 	
 	sConf += sNewCommandSet;
