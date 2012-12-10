@@ -1,50 +1,71 @@
+#include "hexa_common.h"
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cmath>
-#include <list>
+#define CALIBRATION_SERVO_24 (0.022817 	* M_PI)
+#define CALIBRATION_SERVO_25 (1.97135 	* M_PI)
+#define CALIBRATION_SERVO_26 (1.9427 	* M_PI)
 
-#include <unistd.h>
+#define CALIBRATION_SERVO_20 (0.0		* M_PI)
+#define CALIBRATION_SERVO_21 (1.97454 	* M_PI)
+#define CALIBRATION_SERVO_22 (1.97454 	* M_PI)
 
-using namespace std;
+#define CALIBRATION_SERVO_16 (1.95862 	* M_PI)
+#define CALIBRATION_SERVO_17 (1.97135 	* M_PI)
+#define CALIBRATION_SERVO_18 (1.97454 	* M_PI)
 
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
-#include "leg.h"
-#include "hip_sagit.h"
-#include "hip.h"
-#include "hipgroup.h"
-
-#define CALIBRATION_SERVO_24 (0.022817 * M_PI)
-#define CALIBRATION_SERVO_25 (1.97135 * M_PI)
-#define CALIBRATION_SERVO_26 (1.9427 * M_PI)
-
-#define CALIBRATION_SERVO_20 (0.0d * M_PI)
-#define CALIBRATION_SERVO_21 (1.97454d * M_PI)
-#define CALIBRATION_SERVO_22 (1.97454d * M_PI)
-
-#define CALIBRATION_SERVO_16 (1.95862 * M_PI)
-#define CALIBRATION_SERVO_17 (1.97135 * M_PI)
-#define CALIBRATION_SERVO_18 (1.97454 * M_PI)
-
-#define CALIBRATION_SERVO_08 (1.9618 * M_PI)
+#define CALIBRATION_SERVO_08 (1.9618 	* M_PI)
 #define CALIBRATION_SERVO_09 (0.0031831 * M_PI)
-#define CALIBRATION_SERVO_10 (1.99363 * M_PI)
+#define CALIBRATION_SERVO_10 (1.99363 	* M_PI)
 
-#define CALIBRATION_SERVO_04 (0.0127324d * M_PI)
-#define CALIBRATION_SERVO_05 ( 0.0127324d * M_PI)
-#define CALIBRATION_SERVO_06 (1.98727d * M_PI)
+#define CALIBRATION_SERVO_04 (0.0127324 * M_PI)
+#define CALIBRATION_SERVO_05 (0.0127324 * M_PI)
+#define CALIBRATION_SERVO_06 (1.98727 	* M_PI)
 
-#define CALIBRATION_SERVO_00 (1.99682 * M_PI)
-#define CALIBRATION_SERVO_01 (1.9809 * M_PI)
-#define CALIBRATION_SERVO_02 (1.99682 * M_PI)
+#define CALIBRATION_SERVO_00 (1.99682 	* M_PI)
+#define CALIBRATION_SERVO_01 (1.9809 	* M_PI)
+#define CALIBRATION_SERVO_02 (1.99682 	* M_PI)
 
 #define SERVO_MOVE_TIME 1000
+
+
+void save_hip(const CHip &s, const char * filename)
+{
+#if 0
+    // make an archive
+    std::ofstream ofs(filename);
+    assert(ofs.good());
+    boost::archive::text_oarchive oa(ofs);
+    oa << s;
+#endif
+#if 1
+    // make an XML archive
+    std::ofstream ofs(filename);
+    assert(ofs.good());
+    boost::archive::xml_oarchive oa(ofs);
+    oa << BOOST_SERIALIZATION_NVP(s);
+#endif
+}
+
+void load_hip(CHip &s, const char * filename)
+{
+    // open the archive
+    std::ifstream ifs(filename);
+    assert(ifs.good());
+    boost::archive::xml_iarchive ia(ifs);
+
+    // restore from archive
+    ia >> BOOST_SERIALIZATION_NVP(s);
+}
+
+void save_hipgroup(const CHipGroup &s, const char * filename)
+{
+    // make an archive
+    std::ofstream ofs(filename);
+    assert(ofs.good());
+    boost::archive::xml_oarchive oa(ofs);
+    oa << BOOST_SERIALIZATION_NVP(s);
+}
+
 
 void testbench(void)
 {
@@ -67,32 +88,41 @@ void testbench(void)
 	CHipGroup* pTripod01 = new CHipGroup;
 	CHipGroup* pTripod02 = new CHipGroup;
 
-	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_26,
-								25, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_25,
-								24, ServoType_Normal, -(0.25 * M_PI), 	false, CALIBRATION_SERVO_24);
+	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_26,
+									25, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_25,
+									24, ServoType_Normal, -(0.25 * M_PI), 	false, 	CALIBRATION_SERVO_24);
 	
-	CHip* pLegLeft02 = new CHip(	22, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_22,
-								21, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_21,
-								20, ServoType_Normal, -(0.5 * M_PI),	false, CALIBRATION_SERVO_20);
+	CHip* pLegLeft02 = new CHip(	22, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_22,
+									21, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_21,
+									20, ServoType_Normal, -(0.5 * M_PI),	false, 	CALIBRATION_SERVO_20);
 	
-	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 2.0), 	true, CALIBRATION_SERVO_18,
-								17, ServoType_Normal, 0, 			true, CALIBRATION_SERVO_17,
-								16, ServoType_Normal, -(0.75 * M_PI), 	false, CALIBRATION_SERVO_16);
+	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_18,
+									17, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_17,
+									16, ServoType_Normal, -(0.75 * M_PI), 	false, 	CALIBRATION_SERVO_16);
 	
 	
 	
-	CHip* pLegRight01 = new CHip(	10, ServoType_Normal, -(M_PI / 2.0), 	false, CALIBRATION_SERVO_10,
-								9,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_09,
-								8,  ServoType_Normal, -(0.25 * M_PI), 	true, CALIBRATION_SERVO_08);
+	CHip* pLegRight01 = new CHip(	10, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_10,
+									9,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_09,
+									8,  ServoType_Normal, -(0.25 * M_PI), 	true, 	CALIBRATION_SERVO_08);
 								
-	CHip* pLegRight02 = new CHip(	6, ServoType_Normal, -(M_PI / 2.0), 		false, CALIBRATION_SERVO_06,
-								5,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_05,
-								4,  ServoType_Normal, -(0.5 * M_PI),	true, CALIBRATION_SERVO_04);
+	CHip* pLegRight02 = new CHip(	6, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_06,
+									5,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_05,
+									4,  ServoType_Normal, -(0.5 * M_PI),	true, 	CALIBRATION_SERVO_04);
 
-	CHip* pLegRight03 = new CHip(	2, ServoType_Normal, -(M_PI / 2.0), 		false, CALIBRATION_SERVO_02,
-								1,  ServoType_Normal, 0, 			false, CALIBRATION_SERVO_01,
-								0,  ServoType_Normal, -(0.75 * M_PI), 	true, CALIBRATION_SERVO_00);
+	CHip* pLegRight03 = new CHip(	2, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_02,
+									1,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_01,
+									0,  ServoType_Normal, -(0.75 * M_PI), 	true, 	CALIBRATION_SERVO_00);
+
+    std::string filename("./LegLeft01.xml");
+	save_hip(*pLegLeft01, filename.c_str());
 	
+	CHip* pRestoredLeg = new CHip();
+	load_hip(*pRestoredLeg, filename.c_str());
+
+	std::string filename02("./LegLeft01out.xml");
+	save_hip(*pRestoredLeg, filename02.c_str());
+
 	//CHipSagittal* pTestServo = new CHipSagittal(26, ServoType_Normal, -(M_PI / 2.d), true,    25, ServoType_Normal, 0, true);
 	//CLeg* pTestServo = new CLeg(26, ServoType_Normal, -(M_PI / 2.d), true);
 
@@ -100,6 +130,11 @@ void testbench(void)
 	pLeftBugSide->AddHip(pLegLeft02);
 	pLeftBugSide->AddHip(pLegLeft03);
 	
+
+    std::string filename01("./LeftBugSide.xml");
+	save_hipgroup(*pLeftBugSide, filename01.c_str());
+
+
 	pRightBugSide->AddHip(pLegRight01);
 	pRightBugSide->AddHip(pLegRight02);
 	pRightBugSide->AddHip(pLegRight03);

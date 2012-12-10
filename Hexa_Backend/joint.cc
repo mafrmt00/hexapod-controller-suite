@@ -1,12 +1,12 @@
-#include <iostream>
-#include <cmath>
-#include <string>
+#include "hexa_common.h"
 
-using namespace std;
+CJoint::CJoint()
+: m_bIvertRotDirection(false),
+  m_dAngleCalibration(0.0),
+  m_dAngleOffset(0)
+{
 
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
+}
 
 CJoint::CJoint(int IOch, eServoType CurrType, double dAngleOffset, bool bInvertDir, double dAngleCalibration)
 : CServo(IOch, CurrType),
@@ -30,6 +30,11 @@ m_dAngleOffset(0)
 	{
 		SetAngleCalibration(dAngleCalibration);
 	}
+}
+
+CJoint::~CJoint()
+{
+
 }
 
 int CJoint::InvertAngle(double dAngleSource, double& dAngleTarget)

@@ -2,6 +2,8 @@ typedef list<CHip*> HipList;
 
 class CHipGroup
 {
+    friend class boost::serialization::access;
+
 public:
 	CHipGroup(void);
 	~CHipGroup(void);
@@ -22,6 +24,14 @@ public:
 	int FinishSSC32String(string& sConf, int iMoveTime = 0);
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
+
+private:
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+    	ar &  BOOST_SERIALIZATION_NVP(m_pHipList);
+    	ar &  BOOST_SERIALIZATION_NVP(m_DebugLevel);
+    }
 
 protected:
 	HipList* m_pHipList;

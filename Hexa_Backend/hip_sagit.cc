@@ -1,13 +1,4 @@
-#include <iostream>
-#include <cmath>
-
-using namespace std;
-
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
-#include "leg.h"
-#include "hip_sagit.h"
+#include "hexa_common.h"
 
 CHipSagittal::CHipSagittal(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
 						int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir,  double dHipAngleCalibration,

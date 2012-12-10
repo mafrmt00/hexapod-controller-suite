@@ -1,12 +1,13 @@
-#include <iostream>
-#include <string>
 #include <sstream>
+#include "hexa_common.h"
 
-using namespace std;
+CServo::CServo()
+: m_bBinaryCommands (false),
+m_PulseWidth_Offset(0),
+m_DebugLevel(DebugLevel_none)
+{
 
-#include "my_types.h"
-#include "servo.h"
-
+}
 
 CServo::CServo(int IOch, eServoType CurrType)
 : m_bBinaryCommands (false),
@@ -37,7 +38,7 @@ m_DebugLevel(DebugLevel_errors)
 	SetPulseOffset(iOffset);
 }
 
-CServo::~CServo(void)
+CServo::~CServo()
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
