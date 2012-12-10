@@ -1,15 +1,4 @@
-#include <iostream>
-#include <list>
-
-using namespace std;
-
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
-#include "leg.h"
-#include "hip_sagit.h"
-#include "hip.h"
-#include "hipgroup.h"
+#include "hexa_common.h"
 
 CHipGroup::CHipGroup(void)
 : m_pHipList(NULL)

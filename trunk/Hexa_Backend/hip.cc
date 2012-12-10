@@ -1,14 +1,19 @@
-#include <iostream>
-#include <cmath>
+#include "hexa_common.h"
 
-using namespace std;
-
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
-#include "leg.h"
-#include "hip_sagit.h"
-#include "hip.h"
+CHip::CHip()
+: m_pRestLeg(NULL),
+m_pTransverseJoint(NULL),
+m_bCurrentPositionValid(false),
+m_bCurrentPosition_X(0),
+m_bCurrentPosition_Y(0),
+m_bCurrentPosition_Z(0),
+m_DebugLevel(DebugLevel_none)
+{
+	if (m_DebugLevel >= DebugLevel_all)
+	{
+		cout << "Info:  CHip empty Object created." << endl;
+	}
+}
 
 CHip::CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
 			int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dHipAngleCalibration,

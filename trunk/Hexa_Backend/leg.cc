@@ -1,12 +1,11 @@
-#include <iostream>
-#include <cmath>
+#include "hexa_common.h"
 
-using namespace std;
+CLeg::CLeg()
+: m_pKnee(NULL),
+m_DebugLevel(DebugLevel_none)
+{
 
-#include "my_types.h"
-#include "servo.h"
-#include "joint.h"
-#include "leg.h"
+}
 
 CLeg::CLeg(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir,  double dAngleCalibration,
 			double dFemurLength, double dTibiaLength, double dTibiaOffset)
@@ -21,7 +20,7 @@ m_DebugLevel(DebugLevel_all)
 	SetLegParams(dFemurLength, dTibiaLength, dTibiaOffset);
 	CalculateConstants();
 	
-	m_pKnee = new CJoint(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dAngleCalibration);
+	SetKneeParams(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dAngleCalibration);
 }
 
 CLeg::~CLeg(void)
@@ -37,6 +36,20 @@ CLeg::~CLeg(void)
 		cout << "Info:  CLeg Object deleted." << endl;
 	}	
 }
+
+int CLeg::SetKneeParams(int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dAngleCalibration)
+{
+	if (NULL != m_pKnee)
+	{
+		delete m_pKnee;
+		m_pKnee = NULL;
+	}
+
+	m_pKnee = new CJoint(KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir, dAngleCalibration);
+
+	return 0;
+}
+
 
 int CLeg::SetLegParams(double dFemurLength, double dTibiaLength, double dTibiaOffset)
 {

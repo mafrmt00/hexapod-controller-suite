@@ -6,10 +6,14 @@ typedef enum ServoType
 
 class CServo
 {
+	//Boost Serialisation
+	friend class boost::serialization::access;
+
 public:
 	CServo(int IOch, eServoType CurrType);
 	CServo(int IOch, eServoType CurrType, int iOffset);
-	~CServo(void);
+	CServo();
+	~CServo();
 	
 	int SetPulseWidth(int iPwidth);
 	int SetPulseOffset(int iOffset);
@@ -31,6 +35,17 @@ private:
 
 	int SetServoType(eServoType CurrType);
 	int SetIOchannel(int IOch);
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+    	ar &  BOOST_SERIALIZATION_NVP(m_IOchannel);
+        ar &  BOOST_SERIALIZATION_NVP(m_bBinaryCommands);
+        ar &  BOOST_SERIALIZATION_NVP(m_PulseWidth_Current);
+        ar &  BOOST_SERIALIZATION_NVP(m_PulseWidth_Offset);
+        ar &  BOOST_SERIALIZATION_NVP(m_PulseWidth_LimitMax);
+        ar &  BOOST_SERIALIZATION_NVP(m_PulseWidth_LimitMin);
+    }
 
 protected:
 	eDebugLevel m_DebugLevel;
