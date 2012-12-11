@@ -44,7 +44,7 @@ CHipSagittal::~CHipSagittal(void)
 	}	
 }
 
-int CHipSagittal::SetPosition(double dDistance, double dHeight)
+int CHipSagittal::SetPosition(double dDistance, double dHeight, bool bSimulateOnly)
 {
 	int iReturnValue = -1;
 	
@@ -53,13 +53,13 @@ int CHipSagittal::SetPosition(double dDistance, double dHeight)
 	
 	if (CalculateParams(dDistance, dHeight, dLegLen, dHipAng) >= 0)
 	{
-		if( m_pLeg->SetLength(dLegLen) >= 0)
+		if( m_pLeg->SetLength(dLegLen, bSimulateOnly) >= 0)
 		{
 			double dResLegAng;
 			
 			if (m_pLeg->GetResultingLegAngle(dResLegAng) >= 0)
 			{
-				if (m_pHipSagitJoint->SetAngle(dHipAng - dResLegAng) >= 0)
+				if (m_pHipSagitJoint->SetAngle(dHipAng - dResLegAng, bSimulateOnly) >= 0)
 				{
 					iReturnValue = 0;
 				}
@@ -119,7 +119,7 @@ int CHipSagittal::CalculateParams(double dDistance, double dHeight, double& dLeg
 	return iReturnValue;
 }
 
-int CHipSagittal::GetSSC32String(string& sConf)
+int CHipSagittal::GetSSC32String(stringstream& sConf)
 {
 	int iReturnValue = 0;
 	

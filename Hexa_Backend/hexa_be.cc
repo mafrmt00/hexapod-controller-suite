@@ -189,7 +189,7 @@ void testbench(void)
 	pRearBugSide->SetPosition_X(50);
 #endif
 	
-	string sConfigS = "";
+	stringstream sConfigS;
 	
 	pLegLeft01->SetPosition(100, 100, 100) ;
 	pLegLeft02->SetPosition(1, 150, 100) ;
@@ -201,80 +201,85 @@ void testbench(void)
 	
 
 	
+	sConfigS.str("");
 	
-	
-	sConfigS = "";
+
 	pLegLeft01->GetSSC32String(sConfigS);
-	pLegLeft01->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegLeft01->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
 	
-	sConfigS = "";
+	sConfigS.str("");
+
 	pLegLeft02->GetSSC32String(sConfigS);
-	pLegLeft02->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegLeft02->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
 	
-	sConfigS = "";
+	sConfigS.str("");
+
 	pLegLeft03->GetSSC32String(sConfigS);
-	pLegLeft03->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegLeft03->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
 
-	sConfigS = "";
+	sConfigS.str("");
+
 	pLegRight01->GetSSC32String(sConfigS);
-	pLegRight01->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegRight01->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
 	
-	sConfigS = "";
+	sConfigS.str("");
+
 	pLegRight02->GetSSC32String(sConfigS);
-	pLegRight02->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegRight02->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
 
-	sConfigS = "";
+	sConfigS.str("");
+
 	pLegRight03->GetSSC32String(sConfigS);
-	pLegRight03->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
-	SerialPort << sConfigS;
+	pLegRight03->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
+	SerialPort << sConfigS.str();
 	SerialPort.flush();
 	sleep(1);
+	sConfigS.str("");
 	
-	if (pWholeBug->SetPositionRel_Z(25.d) >= 0)
+	if (pWholeBug->SetPositionRel_Z(25.0) >= 0)
 	{
 		//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
-
-		sConfigS = "";
 
 		pWholeBug->GetSSC32String(sConfigS);
 		pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-		SerialPort << sConfigS;
+		SerialPort << sConfigS.str();
 	
 		SerialPort.flush();
+		sConfigS.str("");
 	}
 	
 	sleep(SERVO_MOVE_TIME / 1000);
 	
 	for (int i = 0 ; i < 5 ; i++)
 	{
-		if (pWholeBug->SetPositionRel_X(20.d) >= 0)
+		if (pWholeBug->SetPositionRel_X(20.0) >= 0)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-			sConfigS = "";
 
 			pWholeBug->GetSSC32String(sConfigS);
 			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 		sleep(SERVO_MOVE_TIME / 1000);		
@@ -284,14 +289,13 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-			sConfigS = "";
-
 			pWholeBug->GetSSC32String(sConfigS);
 			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 	
@@ -304,14 +308,13 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-			sConfigS = "";
-
 			pWholeBug->GetSSC32String(sConfigS);
 			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 		sleep(SERVO_MOVE_TIME / 1000);		
@@ -320,14 +323,13 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-			sConfigS = "";
-
 			pWholeBug->GetSSC32String(sConfigS);
 			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 
@@ -338,14 +340,13 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-			sConfigS = "";
-
 			pWholeBug->GetSSC32String(sConfigS);
 			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 		sleep(SERVO_MOVE_TIME / 1000);
@@ -355,18 +356,18 @@ void testbench(void)
 
 	}
 
-	if (pWholeBug->SetPositionRel_Z(-25.d) >= 0)
+	if (pWholeBug->SetPositionRel_Z(-25.0) >= 0)
 	{
 		//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 
-		sConfigS = "";
 
 		pWholeBug->GetSSC32String(sConfigS);
 		pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
 
-		SerialPort << sConfigS;
+		SerialPort << sConfigS.str();
 	
 		SerialPort.flush();
+		sConfigS.str("");
 	}
 	
 	sleep(SERVO_MOVE_TIME / 1000);	
@@ -377,14 +378,14 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 	
-			sConfigS = "";
 
 			pWholeBug->GetSSC32String(sConfigS);
-			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+			pWholeBug->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
 	
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 		sleep(1);
@@ -396,14 +397,14 @@ void testbench(void)
 		{
 			//pTestServo->SetAngle(((7.d * M_PI) / 4.d )  + (((M_PI / 2.d) / 10.d) * i ));
 	
-			sConfigS = "";
 
 			pWholeBug->GetSSC32String(sConfigS);
-			pWholeBug->FinishSSC32String(sConfigS, SERVO_MOVE_TIME);
+			pWholeBug->FinalizeSSC32String(sConfigS, SERVO_MOVE_TIME);
 	
-			SerialPort << sConfigS;
+			SerialPort << sConfigS.str();
 		
 			SerialPort.flush();
+			sConfigS.str("");
 		}
 		
 		sleep(1);
@@ -492,14 +493,11 @@ void calibration(void)
 			
 		}		
 		
-		string sConfigS;
-		string sCRstring = "T1000";
-
-		sCRstring += char(13); 
+		stringstream sConfigS;
 
 		pServo->GetSSC32String(sConfigS);
 
-		SerialPort << sConfigS << sCRstring;
+		SerialPort << sConfigS << "T1000" << char(13);
 	
 		SerialPort.flush();		
 		

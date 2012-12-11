@@ -28,8 +28,8 @@ public:
 	int SetPositionRel_Y(double dPositionOffset_Y);
 	int SetPositionRel_Z(double dPositionOffset_Z);
 
-	int GetSSC32String(string& sConf);
-	int FinishSSC32String(string& sConf, int iMoveTime = 0);
+	int GetSSC32String(stringstream& sConf);
+	int FinishSSC32String(stringstream& sConf, int iMoveTime = 0);
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
 

@@ -5,13 +5,9 @@ CBody::CBody(const CBody &Origin, int uiPartPositionSideFilter, int uiPartPositi
 {
 	if (Origin.m_pHipList != NULL)
 	{
-		if (m_DebugLevel >= DebugLevel_all)
-		{
-			cout << "Info:  CHipGroup new Object generated. And copying..." << endl;
-		}
+		int uiCount = 0;
 
 		m_pHipList = new BodyPartList();
-
 
 		BodyPartList::iterator i;
 
@@ -22,9 +18,16 @@ CBody::CBody(const CBody &Origin, int uiPartPositionSideFilter, int uiPartPositi
 				if ((uiPartPositionLineupFilter == WILDCARD_POSLINEUPFILTER) || (uiPartPositionLineupFilter == (*i)->m_PartPositionLineup))
 				{
 					AddHip(*i);
+					uiCount++;
 				}
 			}
 		}
+
+		if (m_DebugLevel >= DebugLevel_all)
+		{
+			cout << "Info:  CHipGroup new Object generated. And copied " << uiCount << " Entries." << endl;
+		}
+
 	}
 }
 
@@ -179,7 +182,7 @@ int CBody::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_
 	return iReturnValue;
 }
 
-int CBody::GetSSC32String(string& sConf)
+int CBody::GetSSC32String(stringstream& sConf)
 {
 	int iReturnValue = 0;
 	BodyPartList::iterator i;
@@ -195,7 +198,7 @@ int CBody::GetSSC32String(string& sConf)
 	return iReturnValue;	
 }
 
-int CBody::FinishSSC32String(string& sConf, int iMoveTime)
+int CBody::FinishSSC32String(stringstream& sConf, int iMoveTime)
 {
-	return (m_pHipList->back())->FinishSSC32String(sConf, iMoveTime);
+	return (m_pHipList->back())->FinalizeSSC32String(sConf, iMoveTime);
 }

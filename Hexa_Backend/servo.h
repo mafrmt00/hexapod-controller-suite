@@ -18,8 +18,8 @@ public:
 	int SetPulseWidth(int iPwidth, bool bSimulateOnly = false);
 	int SetPulseOffset(int iOffset);
 
-	int GetSSC32String(string& sConf);
-	int FinishSSC32String(string& sConf, int iMoveTime = 0);
+	int GetSSC32String(stringstream& sConf);
+	int FinalizeSSC32String(stringstream& sConf, int iMoveTime = 0);
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
 

@@ -10,8 +10,8 @@ public:
 	CHipSagittal();
 	~CHipSagittal();
 
-	int SetPosition(double dDistance, double dHeight);
-	int GetSSC32String(string& sConf);
+	int SetPosition(double dDistance, double dHeight, bool bSimulateOnly = false);
+	int GetSSC32String(stringstream& sConf);
 
 protected:
 	CJoint* m_pHipSagitJoint;
