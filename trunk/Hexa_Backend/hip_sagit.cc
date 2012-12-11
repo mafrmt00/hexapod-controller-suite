@@ -1,5 +1,13 @@
 #include "hexa_common.h"
 
+CHipSagittal::CHipSagittal()
+: m_pHipSagitJoint(NULL),
+m_pLeg(NULL),
+m_DebugLevel(DebugLevel_none)
+{
+
+}
+
 CHipSagittal::CHipSagittal(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
 						int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir,  double dHipAngleCalibration,
 						double dFemurLength, double dTibiaLength, double dTibiaOffset)

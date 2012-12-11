@@ -1,14 +1,22 @@
-typedef list<CHip*> HipList;
+#ifndef HIPGROUPBLOXX
+#define HIPGROUPBLOXX
 
-class CHipGroup
+#define WILDCARD_PARTSSIDEFILTER 0xFFFF
+#define WILDCARD_POSLINEUPFILTER 0xFFFF
+
+typedef list<CBodyPart*> BodyPartList;
+
+class CBody
 {
     friend class boost::serialization::access;
 
 public:
-	CHipGroup(void);
-	~CHipGroup(void);
+    CBody(const CBody &Origin, int uiPartPositionSideFilter, int uiPartPositionLineupFilter); //Selective Copy Contructor
 
-	int AddHip(CHip* pHip);
+	CBody(void);
+	~CBody(void);
+
+	int AddHip(CBodyPart* pHip);
 
 	int SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z);
 
@@ -25,6 +33,10 @@ public:
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
 
+protected:
+	BodyPartList* m_pHipList;
+	eDebugLevel m_DebugLevel;
+
 private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
@@ -32,8 +44,6 @@ private:
     	ar &  BOOST_SERIALIZATION_NVP(m_pHipList);
     	ar &  BOOST_SERIALIZATION_NVP(m_DebugLevel);
     }
-
-protected:
-	HipList* m_pHipList;
-	eDebugLevel m_DebugLevel;
 };
+
+#endif //HIPGROUPBLOXX
