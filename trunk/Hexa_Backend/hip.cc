@@ -209,7 +209,7 @@ int CCoxa::SetPosition_Z(double dPosition_Z)
 	return iReturnValue;
 }
 
-int CCoxa::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
+int CCoxa::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z, bool bSimulateOnly)
 {
 	int iReturnValue = -1;
 	
@@ -219,11 +219,14 @@ int CCoxa::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_
 	
 	if (CalculateParams(dPosition_X, dPosition_Y, dPosition_Z, dTransverseAngle, dDistance, dHeight) >= 0)
 	{
-		if(m_pRestLeg->SetPosition(dDistance, dHeight) >= 0)
+		if(m_pRestLeg->SetPosition(dDistance, dHeight, bSimulateOnly) >= 0)
 		{
-			if (m_pTransverseJoint->SetAngle(dTransverseAngle) >= 0)
+			if (m_pTransverseJoint->SetAngle(dTransverseAngle, bSimulateOnly) >= 0)
 			{
-				StorePosition(true, dPosition_X, dPosition_Y, dPosition_Z);
+				if (false == bSimulateOnly)
+				{
+					StorePosition(true, dPosition_X, dPosition_Y, dPosition_Z);
+				}
 				iReturnValue = 0;
 			}
 			else
@@ -321,12 +324,12 @@ int CCoxa::CalculateParams(double dPosition_X, double dPosition_Y, double dPosit
 	return 0;
 }
 
-int CCoxa::FinishSSC32String(string& sConf, int iMoveTime)
+int CCoxa::FinalizeSSC32String(stringstream& sConf, int iMoveTime)
 {
-	return m_pTransverseJoint->FinishSSC32String(sConf, iMoveTime);
+	return m_pTransverseJoint->FinalizeSSC32String(sConf, iMoveTime);
 }
 
-int CCoxa::GetSSC32String(string& sConf)
+int CCoxa::GetSSC32String(stringstream& sConf)
 {
 	int iReturnValue = 0;
 	

@@ -1,16 +1,18 @@
 #include "hexa_common.h"
 
 CLeg::CLeg()
-: m_pKnee(NULL),
-m_DebugLevel(DebugLevel_none)
+: m_pKnee(NULL)
+, m_CurrentLegAngle(0)
+, m_DebugLevel(DebugLevel_none)
 {
 
 }
 
 CLeg::CLeg(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir,  double dAngleCalibration,
 			double dFemurLength, double dTibiaLength, double dTibiaOffset)
-: m_pKnee(NULL),
-m_DebugLevel(DebugLevel_all)
+: m_pKnee(NULL)
+, m_CurrentLegAngle(0)
+, m_DebugLevel(DebugLevel_all)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -92,20 +94,28 @@ int CLeg::CalculateConstants(void)
 	return 0;
 }
 
-int CLeg::SetLength(double dLength)
+int CLeg::SetLength(double dLength, bool bSimulateOnly)
 {
 	int iReturnValue = -1;
 	double dKneeAngle;
 	
 	if (CalculateKneeAngle(dLength, dKneeAngle) >= 0)
 	{
-		iReturnValue = m_pKnee->SetAngle(dKneeAngle);
+		iReturnValue = m_pKnee->SetAngle(dKneeAngle, bSimulateOnly);
 		
 		if (iReturnValue >= 0)
 		{
-			m_CurrentLength = dLength;
-			
-			CalculateResultingLegAngle();
+			if (false == bSimulateOnly)
+			{
+				//Saved or not, calculate Angle to given Length
+				CalculateResultingLegAngle(dLength);
+
+				if (false == bSimulateOnly)
+				{
+					m_CurrentLength = dLength;
+					m_CurrentLegAngle = m_ResultingLegAngle;
+				}
+			}
 		}
 	}
 	else
@@ -125,15 +135,15 @@ int CLeg::GetResultingLegAngle(double& dResAngle)
 	return 0;
 }
 
-int CLeg::CalculateResultingLegAngle(void)
+int CLeg::CalculateResultingLegAngle(double dCurrentLength)
 {
 	double dCosineAngle = 0;
 	
-	dCosineAngle += pow(m_CurrentLength, 2.0);
+	dCosineAngle += pow(dCurrentLength, 2.0);
 	dCosineAngle += pow(m_FemurLength, 2.0);
 	dCosineAngle -= pow(m_TibiDiagonal, 2.0);
 	
-	dCosineAngle /= 2 * m_CurrentLength * m_FemurLength;
+	dCosineAngle /= 2 * dCurrentLength * m_FemurLength;
 
 	m_ResultingLegAngle = acos(dCosineAngle);
 	
@@ -168,14 +178,14 @@ int CLeg::CalculateKneeAngle(double dLength, double& dKneeAngle)
 	return 0;
 }
 
-int CLeg::GetSSC32String(string& sConf)
+int CLeg::GetSSC32String(stringstream& sConf)
 {
 	return m_pKnee->GetSSC32String(sConf);
 }
 
-int CLeg::FinishSSC32String(string& sConf, int iMoveTime)
+int CLeg::FinalizeSSC32String(stringstream& sConf, int iMoveTime)
 {
-	return m_pKnee->FinishSSC32String(sConf, iMoveTime);
+	return m_pKnee->FinalizeSSC32String(sConf, iMoveTime);
 }
 
 int CLeg::SetDebugLevel(eDebugLevel NewDebugLevel)

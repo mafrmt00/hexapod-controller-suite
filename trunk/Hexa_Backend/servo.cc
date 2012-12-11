@@ -150,86 +150,56 @@ int CServo::SetPulseWidth(int iPwidth, bool bSimulateOnly)
 	return iReturnValue;
 }
 
-int CServo::GetSSC32String(string& sConf)
+int CServo::GetSSC32String(stringstream& sConf)
 {
-	string sNewCommandSet = "";
+	stringstream sNewCommandSet;
 	
 	if (m_bBinaryCommands)
 	{
-		string sNewCommand;
-		
-		sNewCommand = char(m_IOchannel + 0x80); // Servo Number
-		sNewCommandSet += sNewCommand;
-		
-		sNewCommand = char((m_PulseWidth_Current & 0xFF00) >> 8); // Pulse Width MSB
-		sNewCommandSet += sNewCommand;
-		
-		sNewCommand = char(m_PulseWidth_Current & 0xFF); // Pulse Width LSB
-		sNewCommandSet += sNewCommand;
-		
+		sNewCommandSet << char(m_IOchannel + 0x80); // Servo Number
+		sNewCommandSet << char((m_PulseWidth_Current & 0xFF00) >> 8); // Pulse Width MSB
+		sNewCommandSet << char(m_PulseWidth_Current & 0xFF); // Pulse Width LSB
 	}	
 	else
 	{
-		sNewCommandSet += "#";
-		ostringstream tmpStream00;
-		tmpStream00 << m_IOchannel;
-		sNewCommandSet+= tmpStream00.str();
-		
-		sNewCommandSet += "P";
-		ostringstream tmpStream01;
-		tmpStream01 << m_PulseWidth_Current;
-		sNewCommandSet+= tmpStream01.str();		
-		
+		sNewCommandSet << "#" << m_IOchannel;
+		sNewCommandSet << "P" << m_PulseWidth_Current;
+
+		string sOutDisplay;
+
+		sOutDisplay = sNewCommandSet.str();
+
 		if (m_DebugLevel >= DebugLevel_all)
 		{	
-			cout << "Info:  CServo::GetSSC32String ASCII Commandstring generated: " << sNewCommandSet << endl;
+			cout << "Info:  CServo::GetSSC32String ASCII Commandstring generated: " << sOutDisplay << endl;
 		}		
 	}
-	
-	sConf += sNewCommandSet;
-	
+
+	sConf << sNewCommandSet.str();
 	return 0;
 }
 
-int CServo::FinishSSC32String(string& sConf, int iMoveTime)
+int CServo::FinalizeSSC32String(stringstream& sConf, int iMoveTime)
 {
-	string sNewCommandSet = "";
-	
 	if (m_bBinaryCommands)
 	{
-		string sNewCommand;
-		
-		sNewCommand = char(m_IOchannel + 0xA1); // Move Time
-		sNewCommandSet += sNewCommand;
-		
-		sNewCommand = char((iMoveTime & 0xFF00) >> 8); // Pulse Width MSB
-		sNewCommandSet += sNewCommand;
-		
-		sNewCommand = char(iMoveTime & 0xFF); // Pulse Width LSB
-		sNewCommandSet += sNewCommand;		
+		sConf << char(m_IOchannel + 0xA1); // Move Time
+		sConf << char((iMoveTime & 0xFF00) >> 8); // Pulse Width MSB
+		sConf << char(iMoveTime & 0xFF); // Pulse Width LSB
 	}
 	else
 	{
-		sNewCommandSet += "T";
-		ostringstream tmpStream00;
-		tmpStream00 << iMoveTime;
-		sNewCommandSet+= tmpStream00.str();	
-		
-		sConf += sNewCommandSet;
+		sConf << "T" << iMoveTime << char(13);
+
+		string sOutDisplay;
+
+		sOutDisplay = sConf.str();
 
 		if (m_DebugLevel >= DebugLevel_all)
 		{	
-			cout << "Info:  CServo::FinishSSC32String ASCII Commandstring finished : " << sConf << endl;
+			cout << "Info:  CServo::FinalizeSSC32String ASCII Commandstring finished : " << sOutDisplay << endl;
 		}
-		
-		string sCRstring = "";
-		sCRstring += char(13); 
-		
-		sConf += sCRstring;
 	}
-	
-	sConf += sNewCommandSet;
-	
 	return 0;
 }
 

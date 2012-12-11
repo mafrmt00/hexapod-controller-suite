@@ -13,7 +13,7 @@ public:
 	CCoxa();
 	~CCoxa(void);
 
-	int SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z);
+	int SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z, bool bSimulateOnly = false);
 	int SetPosition_X(double dPosition_X);
 	int SetPosition_Y(double dPosition_Y);
 	int SetPosition_Z(double dPosition_Z);
@@ -22,8 +22,8 @@ public:
 	int SetPositionRel_Y(double dPositionOffset_Y);
 	int SetPositionRel_Z(double dPositionOffset_Z);
 
-	int GetSSC32String(string& sConf);
-	int FinishSSC32String(string& sConf, int iMoveTime = 0);
+	int GetSSC32String(stringstream& sConf);
+	int FinalizeSSC32String(stringstream& sConf, int iMoveTime = 0);
 
 protected:
 	CHipSagittal* m_pRestLeg;
