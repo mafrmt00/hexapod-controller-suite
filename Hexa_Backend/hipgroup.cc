@@ -1,6 +1,34 @@
 #include "hexa_common.h"
 
-CHipGroup::CHipGroup(void)
+CBody::CBody(const CBody &Origin, int uiPartPositionSideFilter, int uiPartPositionLineupFilter) //Selective Copy Contructor
+: m_pHipList(NULL)
+{
+	if (Origin.m_pHipList != NULL)
+	{
+		if (m_DebugLevel >= DebugLevel_all)
+		{
+			cout << "Info:  CHipGroup new Object generated. And copying..." << endl;
+		}
+
+		m_pHipList = new BodyPartList();
+
+
+		BodyPartList::iterator i;
+
+		for(i = Origin.m_pHipList->begin(); i != Origin.m_pHipList->end(); ++i)
+		{
+			if ((uiPartPositionSideFilter == WILDCARD_PARTSSIDEFILTER) || (uiPartPositionSideFilter == (*i)->m_PartPositionSide))
+			{
+				if ((uiPartPositionLineupFilter == WILDCARD_POSLINEUPFILTER) || (uiPartPositionLineupFilter == (*i)->m_PartPositionLineup))
+				{
+					AddHip(*i);
+				}
+			}
+		}
+	}
+}
+
+CBody::CBody(void)
 : m_pHipList(NULL)
 {
 	if (m_DebugLevel >= DebugLevel_all)
@@ -8,10 +36,10 @@ CHipGroup::CHipGroup(void)
 		cout << "Info:  CHipGroup new Object generated." << endl;
 	}
 	
-	m_pHipList = new HipList();
+	m_pHipList = new BodyPartList();
 }
 
-CHipGroup::~CHipGroup(void)
+CBody::~CBody(void)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -25,23 +53,23 @@ CHipGroup::~CHipGroup(void)
 	}
 }
 
-int CHipGroup::AddHip(CHip* pHip)
+int CBody::AddHip(CBodyPart* pHip)
 {
 	m_pHipList->push_back(pHip);
 	
 	return 0;
 }
 
-int CHipGroup::SetDebugLevel(eDebugLevel NewDebugLevel)
+int CBody::SetDebugLevel(eDebugLevel NewDebugLevel)
 {
 	m_DebugLevel = NewDebugLevel;
 	return 0;
 }
 
-int CHipGroup::SetPositionRel_X(double dPositionOffset_X)
+int CBody::SetPositionRel_X(double dPositionOffset_X)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -55,10 +83,10 @@ int CHipGroup::SetPositionRel_X(double dPositionOffset_X)
 }
 
 
-int CHipGroup::SetPositionRel_Y(double dPositionOffset_Y)
+int CBody::SetPositionRel_Y(double dPositionOffset_Y)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -71,10 +99,10 @@ int CHipGroup::SetPositionRel_Y(double dPositionOffset_Y)
 	return iReturnValue;
 }
 
-int CHipGroup::SetPositionRel_Z(double dPositionOffset_Z)
+int CBody::SetPositionRel_Z(double dPositionOffset_Z)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -87,10 +115,10 @@ int CHipGroup::SetPositionRel_Z(double dPositionOffset_Z)
 	return iReturnValue;
 }
 
-int CHipGroup::SetPosition_X(double dPosition_X)
+int CBody::SetPosition_X(double dPosition_X)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -103,10 +131,10 @@ int CHipGroup::SetPosition_X(double dPosition_X)
 	return iReturnValue;
 }
 
-int CHipGroup::SetPosition_Y(double dPosition_Y)
+int CBody::SetPosition_Y(double dPosition_Y)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -119,10 +147,10 @@ int CHipGroup::SetPosition_Y(double dPosition_Y)
 	return iReturnValue;
 }
 
-int CHipGroup::SetPosition_Z(double dPosition_Z)
+int CBody::SetPosition_Z(double dPosition_Z)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -135,10 +163,10 @@ int CHipGroup::SetPosition_Z(double dPosition_Z)
 	return iReturnValue;
 }
 
-int CHipGroup::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
+int CBody::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -151,10 +179,10 @@ int CHipGroup::SetPosition(double dPosition_X, double dPosition_Y, double dPosit
 	return iReturnValue;
 }
 
-int CHipGroup::GetSSC32String(string& sConf)
+int CBody::GetSSC32String(string& sConf)
 {
 	int iReturnValue = 0;
-	HipList::iterator i;
+	BodyPartList::iterator i;
 	
 	for( i = m_pHipList->begin(); i != m_pHipList->end(); ++i ) 
 	{
@@ -167,7 +195,7 @@ int CHipGroup::GetSSC32String(string& sConf)
 	return iReturnValue;	
 }
 
-int CHipGroup::FinishSSC32String(string& sConf, int iMoveTime)
+int CBody::FinishSSC32String(string& sConf, int iMoveTime)
 {
 	return (m_pHipList->back())->FinishSSC32String(sConf, iMoveTime);
 }

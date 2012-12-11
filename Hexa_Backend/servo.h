@@ -15,7 +15,7 @@ public:
 	CServo();
 	~CServo();
 	
-	int SetPulseWidth(int iPwidth);
+	int SetPulseWidth(int iPwidth, bool bSimulateOnly = false);
 	int SetPulseOffset(int iOffset);
 
 	int GetSSC32String(string& sConf);

@@ -21,8 +21,6 @@ protected:
 	CJoint* m_pKnee;
 	eDebugLevel m_DebugLevel;
 
-
-
 	double m_FemurLength;
 	double m_TibiaLength;
 	double m_TibiaOffset;

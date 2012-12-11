@@ -21,12 +21,12 @@ m_dAngleOffset(0)
 		cout << "Info:  CJoint new Object generated." << endl;
 	}
 	
-	if (dAngleOffset != 0.d)
+	if (dAngleOffset != 0.0)
 	{
 		SetAngleOffset	(dAngleOffset);
 	}
 	
-	if (dAngleCalibration != 0.d)
+	if (dAngleCalibration != 0.0)
 	{
 		SetAngleCalibration(dAngleCalibration);
 	}
@@ -41,14 +41,14 @@ int CJoint::InvertAngle(double dAngleSource, double& dAngleTarget)
 {
 	if ( dAngleSource <= M_PI)
 	{
-		dAngleTarget = (2.d * M_PI) - dAngleSource;
+		dAngleTarget = (2.0 * M_PI) - dAngleSource;
 	}
 	else
 	{
 		dAngleTarget = M_PI - (dAngleSource - M_PI);
 	}
 
-	dAngleTarget = fmod ( dAngleTarget,  M_PI * 2.d);	
+	dAngleTarget = fmod ( dAngleTarget,  M_PI * 2.0);
 	
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
@@ -72,10 +72,10 @@ int CJoint::RadToPulse(double dAngleSource, int& iPulseWidth)
 		dAngle = dAngleSource;
 	}
 	
-	if (m_dAngleCalibration != 0.d)
+	if (m_dAngleCalibration != 0.0)
 	{
 		dAngle += m_dAngleCalibration;
-		dAngle = fmod ( dAngle,  M_PI * 2.d);	
+		dAngle = fmod ( dAngle,  M_PI * 2.0);
 	}
 		
 	if (((dAngle >= 0.d) && (dAngle <= (M_PI / 2.d))) || (( dAngle <= (2.d * M_PI) ) && ( dAngle >= ((3.d * M_PI)  / 2.d))))
@@ -93,17 +93,17 @@ int CJoint::RadToPulse(double dAngleSource, int& iPulseWidth)
 		}
 		
 		//Standard Range
-		if (((dAngle >= 0.d) && (dAngle <= (M_PI / 4.d))) || (( dAngle <= (2.d * M_PI) ) && ( dAngle >= ((7.d * M_PI)  / 4.d))))
+		if (((dAngle >= 0.0) && (dAngle <= (M_PI / 4.0))) || (( dAngle <= (2.0 * M_PI) ) && ( dAngle >= ((7.0 * M_PI)  / 4.0))))
 		{
-			if ((dAngle >= 0.d)  &&  (dAngle <= (M_PI / 4.d)))
+			if ((dAngle >= 0.0)  &&  (dAngle <= (M_PI / 4.0)))
 			{
-				iPulseWidth = (int) (1500.d + ((1200.d / (M_PI/2.d)) * (dAngle)));
+				iPulseWidth = (int) (1500.0 + ((1200.0 / (M_PI/2.0)) * (dAngle)));
 				iReturnValue = 0;
 			}
 			
-			if (( dAngle <= (2.d * M_PI) ) && ( dAngle >= ((7.d * M_PI)  / 4.d)))
+			if (( dAngle <= (2.0 * M_PI) ) && ( dAngle >= ((7.0 * M_PI)  / 4.0)))
 			{
-				iPulseWidth = (int) (300.d + ((1200.d / (M_PI/2.d)) * (dAngle -  ((3.d * M_PI) / 2.d))));
+				iPulseWidth = (int) (300.0 + ((1200.0 / (M_PI/2.0)) * (dAngle -  ((3.0 * M_PI) / 2.0))));
 				iReturnValue = 0;				
 			}
 			
@@ -114,9 +114,9 @@ int CJoint::RadToPulse(double dAngleSource, int& iPulseWidth)
 		}
 		
 		//Upper extended Range
-		if (( dAngle > (M_PI/4.d)) && (dAngle <=  (M_PI/2.d) ))
+		if (( dAngle > (M_PI/4.0)) && (dAngle <=  (M_PI/2.0) ))
 		{
-			iPulseWidth = (int) (2100.d + ((400.d / (M_PI/4.d)) * (dAngle - (M_PI/4.d)) ));
+			iPulseWidth = (int) (2100.0 + ((400.0 / (M_PI/4.0)) * (dAngle - (M_PI/4.0)) ));
 			iReturnValue = 0;
 			
 			if (m_DebugLevel >= DebugLevel_all)
@@ -144,7 +144,7 @@ int CJoint::SetAngleCalibration(double dOffset)
 		cout << "Info:  CJoint::SetAngleCalibration new Offset set:" << (dOffset / M_PI) << "*PI."<< endl;
 	}	
 	
-	m_dAngleCalibration = fmod ( dOffset,  M_PI * 2.d);
+	m_dAngleCalibration = fmod ( dOffset,  M_PI * 2.0);
 
 	return 0;
 }
@@ -161,7 +161,7 @@ int CJoint::SetAngleOffset(double dOffset)
 	return 0;
 }
 
-int CJoint::SetAngle(double dAngle)
+int CJoint::SetAngle(double dAngle, bool bSimulateOnly)
 {
 	int iNewPulseWidth;
 	int iReturnValue;
@@ -170,16 +170,26 @@ int CJoint::SetAngle(double dAngle)
 	
 	while (dAngle < 0)
 	{
-		dAngle += (2.d * M_PI);
+		dAngle += (2.0 * M_PI);
 	}
 	
-	dAngle = fmod ( dAngle,  M_PI * 2.d);
+	dAngle = fmod ( dAngle,  M_PI * 2.0);
 		
 	iReturnValue = RadToPulse(dAngle, iNewPulseWidth);
 	
 	if (iReturnValue >= 0)
 	{
-		iReturnValue = SetPulseWidth(iNewPulseWidth);
+		iReturnValue = SetPulseWidth(iNewPulseWidth, bSimulateOnly);
+
+		if ((iReturnValue) && (false == bSimulateOnly))
+		{
+			m_dAngleCurrent = dAngle;
+
+			if (m_DebugLevel >= DebugLevel_all)
+			{
+				cout << "Info:  CJoint::SetAngle new Angle set:" << (dAngle / M_PI) << "*PI."<< endl;
+			}
+		}
 	}
 	
 	return iReturnValue;

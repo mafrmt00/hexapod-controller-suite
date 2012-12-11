@@ -34,4 +34,6 @@ using namespace std;
 #include "leg.h"
 #include "hip_sagit.h"
 #include "hip.h"
+#include "bodypart.h"
 #include "hipgroup.h"
+

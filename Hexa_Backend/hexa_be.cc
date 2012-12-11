@@ -28,7 +28,7 @@
 #define SERVO_MOVE_TIME 1000
 
 
-void save_hip(const CHip &s, const char * filename)
+void save_BodyPart(const CBodyPart &s, const char * filename)
 {
 #if 0
     // make an archive
@@ -46,7 +46,7 @@ void save_hip(const CHip &s, const char * filename)
 #endif
 }
 
-void load_hip(CHip &s, const char * filename)
+void load_BodyPart(CBodyPart &s, const char * filename)
 {
     // open the archive
     std::ifstream ifs(filename);
@@ -57,7 +57,7 @@ void load_hip(CHip &s, const char * filename)
     ia >> BOOST_SERIALIZATION_NVP(s);
 }
 
-void save_hipgroup(const CHipGroup &s, const char * filename)
+void save_hipgroup(const CBody &s, const char * filename)
 {
     // make an archive
     std::ofstream ofs(filename);
@@ -80,71 +80,87 @@ void testbench(void)
 	
 	cout << "Hexapod Backend started." << endl;
 	
-	CHipGroup* pLeftBugSide = new CHipGroup;
-	CHipGroup* pRightBugSide = new CHipGroup;
-	CHipGroup* pFrontBugSide = new CHipGroup;
-	CHipGroup* pRearBugSide = new CHipGroup;
-	CHipGroup* pWholeBug = new CHipGroup;
-	CHipGroup* pTripod01 = new CHipGroup;
-	CHipGroup* pTripod02 = new CHipGroup;
 
-	CHip* pLegLeft01 = new CHip(	26, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_26,
+	CBodyPart* pLegLeft01 = new CBodyPart(
+									26, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_26,
 									25, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_25,
-									24, ServoType_Normal, -(0.25 * M_PI), 	false, 	CALIBRATION_SERVO_24);
+									24, ServoType_Normal, -(0.25 * M_PI), 	false, 	CALIBRATION_SERVO_24,
+									0, 0);
 	
-	CHip* pLegLeft02 = new CHip(	22, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_22,
+	CBodyPart* pLegLeft02 = new CBodyPart(
+									22, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_22,
 									21, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_21,
-									20, ServoType_Normal, -(0.5 * M_PI),	false, 	CALIBRATION_SERVO_20);
+									20, ServoType_Normal, -(0.5 * M_PI),	false, 	CALIBRATION_SERVO_20,
+									0, 1);
 	
-	CHip* pLegLeft03 = new CHip(	18, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_18,
+	CBodyPart* pLegLeft03 = new CBodyPart(
+									18, ServoType_Normal, -(M_PI / 2.0), 	true, 	CALIBRATION_SERVO_18,
 									17, ServoType_Normal, 0, 				true, 	CALIBRATION_SERVO_17,
-									16, ServoType_Normal, -(0.75 * M_PI), 	false, 	CALIBRATION_SERVO_16);
+									16, ServoType_Normal, -(0.75 * M_PI), 	false, 	CALIBRATION_SERVO_16,
+									0, 2);
 	
 	
 	
-	CHip* pLegRight01 = new CHip(	10, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_10,
+	CBodyPart* pLegRight01 = new CBodyPart(
+									10, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_10,
 									9,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_09,
-									8,  ServoType_Normal, -(0.25 * M_PI), 	true, 	CALIBRATION_SERVO_08);
+									8,  ServoType_Normal, -(0.25 * M_PI), 	true, 	CALIBRATION_SERVO_08,
+									1, 0);
 								
-	CHip* pLegRight02 = new CHip(	6, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_06,
+	CBodyPart* pLegRight02 = new CBodyPart(
+									6, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_06,
 									5,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_05,
-									4,  ServoType_Normal, -(0.5 * M_PI),	true, 	CALIBRATION_SERVO_04);
+									4,  ServoType_Normal, -(0.5 * M_PI),	true, 	CALIBRATION_SERVO_04,
+									1, 1);
 
-	CHip* pLegRight03 = new CHip(	2, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_02,
+	CBodyPart* pLegRight03 = new CBodyPart(
+									2, ServoType_Normal, -(M_PI / 2.0), 	false, 	CALIBRATION_SERVO_02,
 									1,  ServoType_Normal, 0.0, 				false, 	CALIBRATION_SERVO_01,
-									0,  ServoType_Normal, -(0.75 * M_PI), 	true, 	CALIBRATION_SERVO_00);
+									0,  ServoType_Normal, -(0.75 * M_PI), 	true, 	CALIBRATION_SERVO_00,
+									1, 2);
 
+
+	//Serialization test
     std::string filename("./LegLeft01.xml");
-	save_hip(*pLegLeft01, filename.c_str());
+	save_BodyPart(*pLegLeft01, filename.c_str());
 	
-	CHip* pRestoredLeg = new CHip();
-	load_hip(*pRestoredLeg, filename.c_str());
+	CBodyPart* pRestoredLeg = new CBodyPart();
+	load_BodyPart(*pRestoredLeg, filename.c_str());
 
 	std::string filename02("./LegLeft01out.xml");
-	save_hip(*pRestoredLeg, filename02.c_str());
+	save_BodyPart(*pRestoredLeg, filename02.c_str());
 
 	//CHipSagittal* pTestServo = new CHipSagittal(26, ServoType_Normal, -(M_PI / 2.d), true,    25, ServoType_Normal, 0, true);
 	//CLeg* pTestServo = new CLeg(26, ServoType_Normal, -(M_PI / 2.d), true);
 
-	pLeftBugSide->AddHip(pLegLeft01);
-	pLeftBugSide->AddHip(pLegLeft02);
-	pLeftBugSide->AddHip(pLegLeft03);
-	
 
-    std::string filename01("./LeftBugSide.xml");
-	save_hipgroup(*pLeftBugSide, filename01.c_str());
+	//Contruct the Bug
+	CBody* pWholeBug = new CBody();
 
+	pWholeBug->AddHip(pLegLeft01);
+	pWholeBug->AddHip(pLegLeft02);
+	pWholeBug->AddHip(pLegLeft03);
 
-	pRightBugSide->AddHip(pLegRight01);
-	pRightBugSide->AddHip(pLegRight02);
-	pRightBugSide->AddHip(pLegRight03);
+	pWholeBug->AddHip(pLegRight01);
+	pWholeBug->AddHip(pLegRight02);
+	pWholeBug->AddHip(pLegRight03);
+
+	//Left Side
+	CBody* pLeftBugSide = new CBody(*pWholeBug, 0, WILDCARD_POSLINEUPFILTER);
+
+	//Right Side
+	CBody* pRightBugSide = new CBody(*pWholeBug, 1, WILDCARD_POSLINEUPFILTER);
+
+	//Front
+	CBody* pFrontBugSide = new CBody(*pWholeBug, WILDCARD_PARTSSIDEFILTER, 0);
 	
-	pFrontBugSide->AddHip(pLegLeft01);
-	pFrontBugSide->AddHip(pLegRight01);
-	
-	pRearBugSide->AddHip(pLegLeft03);
-	pRearBugSide->AddHip(pLegRight03);	
-	
+	//Rear
+	CBody* pRearBugSide  = new CBody(*pWholeBug, WILDCARD_PARTSSIDEFILTER, 2);
+
+	//Tripods
+	CBody* pTripod01 = new CBody();
+	CBody* pTripod02 = new CBody();
+
 	pTripod01->AddHip(pLegLeft01);
 	pTripod01->AddHip(pLegRight02);
 	pTripod01->AddHip(pLegLeft03);	
@@ -152,6 +168,10 @@ void testbench(void)
 	pTripod02->AddHip(pLegRight01);
 	pTripod02->AddHip(pLegLeft02);
 	pTripod02->AddHip(pLegRight03);		
+
+
+    std::string filename01("./LeftBugSide.xml");
+	save_hipgroup(*pLeftBugSide, filename01.c_str());
 	
 	#if 0	
 	pWholeBug->AddHip(pLegLeft01);
@@ -179,13 +199,7 @@ void testbench(void)
 	pLegRight02->SetPosition(1, -150, 100) ;
 	pLegRight03->SetPosition(-100, -100, 100) ;
 	
-	pWholeBug->AddHip(pLegLeft01);	
-	pWholeBug->AddHip(pLegLeft02);
-	pWholeBug->AddHip(pLegLeft03);
-	
-	pWholeBug->AddHip(pLegRight01);
-	pWholeBug->AddHip(pLegRight02);
-	pWholeBug->AddHip(pLegRight03);
+
 	
 	
 	

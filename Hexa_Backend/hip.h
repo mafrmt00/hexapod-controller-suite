@@ -1,17 +1,17 @@
-class CHip
+class CCoxa
 {
 	//Boost Serialisation
 	friend class boost::serialization::access;
 
 public:
-	CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
+	CCoxa(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
 			int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dHipAngleCalibration,
 			int HipTrIOch, eServoType HipTrCurrType, double dHipTrAngleOffset, bool bHipTrInvertDir, double dHipTrAngleCalibration,
 			double dHeightOffs = 27.0, double dDistanceOffs = 27.0, double dSideOffs = 5.0,
 			double dFemurLength = 76.0, double dTibiaLength = 95.0, double dTibiaOffset = 44.0);
 
-	CHip();
-	~CHip(void);
+	CCoxa();
+	~CCoxa(void);
 
 	int SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z);
 	int SetPosition_X(double dPosition_X);
@@ -49,10 +49,16 @@ private:
     void save(Archive & ar, const unsigned int version) const
     {
 		bool bTransverseJointPresent = false;
+		bool bRestLegPresent = false;
 
 		if(NULL != m_pTransverseJoint)
 		{
 			bTransverseJointPresent = true;
+		}
+
+		if(NULL != m_pRestLeg)
+		{
+			bRestLegPresent = true;
 		}
 
     	ar & BOOST_SERIALIZATION_NVP(m_bCurrentPositionValid);
@@ -72,12 +78,19 @@ private:
         {
         	ar & BOOST_SERIALIZATION_NVP(m_pTransverseJoint);
         }
+
+        ar & BOOST_SERIALIZATION_NVP(bRestLegPresent);
+        if (bRestLegPresent)
+        {
+        	ar & BOOST_SERIALIZATION_NVP(m_pRestLeg);
+        }
     }
 
     template<class Archive>
     void load(Archive & ar, const unsigned int version)
     {
     	bool bTransverseJointPresent = false;
+    	bool bRestLegPresent = false;
 
     	ar & BOOST_SERIALIZATION_NVP(m_bCurrentPositionValid);
 
@@ -96,6 +109,13 @@ private:
         {
         	m_pTransverseJoint = new CJoint();
         	ar & BOOST_SERIALIZATION_NVP(m_pTransverseJoint);
+        }
+
+        ar & BOOST_SERIALIZATION_NVP(bRestLegPresent);
+        if (bRestLegPresent)
+        {
+        	m_pRestLeg = new CHipSagittal();
+        	ar & BOOST_SERIALIZATION_NVP(m_pRestLeg);
         }
     }
     BOOST_SERIALIZATION_SPLIT_MEMBER()

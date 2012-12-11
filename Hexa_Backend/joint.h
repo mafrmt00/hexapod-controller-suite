@@ -9,7 +9,7 @@ public:
 	CJoint();
 	~CJoint();
 
-	int SetAngle(double dAngle); //Sets the current Angle, in radians.
+	int SetAngle(double dAngle, bool bSimulateOnly = false); //Sets the current Angle, in radians.
 	int SetAngleOffset(double dOffset);
 
 	int SetDebugLevel(eDebugLevel NewDebugLevel);
@@ -34,5 +34,4 @@ private:
         ar & BOOST_SERIALIZATION_NVP(m_dAngleCalibration);
         ar & BOOST_SERIALIZATION_NVP(m_dAngleOffset);
     }
-
 };

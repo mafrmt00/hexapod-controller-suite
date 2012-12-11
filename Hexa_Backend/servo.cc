@@ -124,7 +124,7 @@ int CServo::SetServoType(eServoType CurrType)
 	return iReturnValue;
 }
 
-int CServo::SetPulseWidth(int iPwidth)
+int CServo::SetPulseWidth(int iPwidth, bool bSimulateOnly)
 {
 	int iReturnValue = -1;
 	
@@ -132,7 +132,11 @@ int CServo::SetPulseWidth(int iPwidth)
 	
 	if ((iPwidth >= m_PulseWidth_LimitMin) && (iPwidth <=m_PulseWidth_LimitMax ))
 	{
-		m_PulseWidth_Current = iPwidth;
+		//OK Pulsewidth is in Range
+		if (false == bSimulateOnly)
+		{
+			m_PulseWidth_Current = iPwidth;
+		}
 		iReturnValue = 0;
 	}
 	else

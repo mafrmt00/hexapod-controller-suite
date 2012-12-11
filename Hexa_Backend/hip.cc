@@ -1,6 +1,6 @@
 #include "hexa_common.h"
 
-CHip::CHip()
+CCoxa::CCoxa()
 : m_pRestLeg(NULL),
 m_pTransverseJoint(NULL),
 m_bCurrentPositionValid(false),
@@ -11,11 +11,11 @@ m_DebugLevel(DebugLevel_none)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{
-		cout << "Info:  CHip empty Object created." << endl;
+		cout << "Info:  CCoxa empty Object created." << endl;
 	}
 }
 
-CHip::CHip(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
+CCoxa::CCoxa(	int KneeIOch, eServoType KneeCurrType, double dKneeAngleOffset, bool bKneeInvertDir, double dKneeAngleCalibration,
 			int HipSIOch, eServoType HipSCurrType, double dHipSAngleOffset, bool bHipSInvertDir, double dHipAngleCalibration,
 			int HipTrIOch, eServoType HipTrCurrType, double dHipTrAngleOffset, bool bHipTrInvertDir, double dHipTrAngleCalibration,
 			double dHeightOffs, double dDistanceOffs, double dSideOffs,
@@ -30,7 +30,7 @@ m_DebugLevel(DebugLevel_all)
 {
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
-		cout << "Info:  CHip Object created." << endl;
+		cout << "Info:  CCoxa Object created." << endl;
 	}
 	
 	m_pRestLeg = new CHipSagittal(	KneeIOch, KneeCurrType, dKneeAngleOffset, bKneeInvertDir,  dKneeAngleCalibration,
@@ -41,7 +41,7 @@ m_DebugLevel(DebugLevel_all)
 	SetSagittalOffset(dHeightOffs, dDistanceOffs, dSideOffs);
 }
 
-CHip::~CHip(void)
+CCoxa::~CCoxa(void)
 {
 	if (m_pRestLeg != NULL)
 	{
@@ -57,11 +57,11 @@ CHip::~CHip(void)
 	
 	if (m_DebugLevel >= DebugLevel_all)
 	{	
-		cout << "Info:  CHip Object deleted." << endl;
+		cout << "Info:  CCoxa Object deleted." << endl;
 	}		
 }
 
-int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, double dPosition_Z)
+int CCoxa::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, double dPosition_Z)
 {
 	int iReturnValue = -1;
 
@@ -89,7 +89,7 @@ int CHip::StorePosition(bool bValid, double dPosition_X, double dPosition_Y, dou
 	return iReturnValue;
 }
 
-int CHip::SetPositionRel_X(double dPositionOffset_X)
+int CCoxa::SetPositionRel_X(double dPositionOffset_X)
 {
 	int iReturnValue = -1;
 	
@@ -110,7 +110,7 @@ int CHip::SetPositionRel_X(double dPositionOffset_X)
 	return iReturnValue;
 }
 
-int CHip::SetPositionRel_Y(double dPositionOffset_Y)
+int CCoxa::SetPositionRel_Y(double dPositionOffset_Y)
 {
 	int iReturnValue = -1;
 	
@@ -131,7 +131,7 @@ int CHip::SetPositionRel_Y(double dPositionOffset_Y)
 	return iReturnValue;
 }
 
-int CHip::SetPositionRel_Z(double dPositionOffset_Z)
+int CCoxa::SetPositionRel_Z(double dPositionOffset_Z)
 {
 	int iReturnValue = -1;
 	
@@ -152,7 +152,7 @@ int CHip::SetPositionRel_Z(double dPositionOffset_Z)
 	return iReturnValue;
 }
 
-int CHip::SetPosition_X(double dPosition_X)
+int CCoxa::SetPosition_X(double dPosition_X)
 {
 	int iReturnValue = -1;
 	
@@ -171,7 +171,7 @@ int CHip::SetPosition_X(double dPosition_X)
 	return iReturnValue;
 }
 
-int CHip::SetPosition_Y(double dPosition_Y)
+int CCoxa::SetPosition_Y(double dPosition_Y)
 {
 	int iReturnValue = -1;
 	
@@ -190,7 +190,7 @@ int CHip::SetPosition_Y(double dPosition_Y)
 	return iReturnValue;
 }
 
-int CHip::SetPosition_Z(double dPosition_Z)
+int CCoxa::SetPosition_Z(double dPosition_Z)
 {
 	int iReturnValue = -1;
 	
@@ -209,7 +209,7 @@ int CHip::SetPosition_Z(double dPosition_Z)
 	return iReturnValue;
 }
 
-int CHip::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
+int CCoxa::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z)
 {
 	int iReturnValue = -1;
 	
@@ -253,7 +253,7 @@ int CHip::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z
 	return iReturnValue;
 }
 
-int CHip::SetSagittalOffset(double dHeight, double dDistance, double dSide)
+int CCoxa::SetSagittalOffset(double dHeight, double dDistance, double dSide)
 {
 	m_dSagittalOffset_Height = dHeight;
 	m_dSagittalOffset_Distance = dDistance;
@@ -267,7 +267,7 @@ int CHip::SetSagittalOffset(double dHeight, double dDistance, double dSide)
 	return 0;
 }
 
-int CHip::CalculateParams(double dPosition_X, double dPosition_Y, double dPosition_Z, double& dTransverseAngle, double& dDistance, double& dHeight)
+int CCoxa::CalculateParams(double dPosition_X, double dPosition_Y, double dPosition_Z, double& dTransverseAngle, double& dDistance, double& dHeight)
 {
 	double dD1Square = 0;
 	//double dD1 = 0;
@@ -321,12 +321,12 @@ int CHip::CalculateParams(double dPosition_X, double dPosition_Y, double dPositi
 	return 0;
 }
 
-int CHip::FinishSSC32String(string& sConf, int iMoveTime)
+int CCoxa::FinishSSC32String(string& sConf, int iMoveTime)
 {
 	return m_pTransverseJoint->FinishSSC32String(sConf, iMoveTime);
 }
 
-int CHip::GetSSC32String(string& sConf)
+int CCoxa::GetSSC32String(string& sConf)
 {
 	int iReturnValue = 0;
 	
