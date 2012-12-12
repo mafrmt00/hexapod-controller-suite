@@ -2,6 +2,10 @@
 
 outpipe=/tmp/hexa_be_out
 inpipe=/tmp/hexa_be_in
+serialport=/dev/ttyO0 
+
+#Initialize Serial Port
+stty -F $serialport 115200 cs8 -cstopb -parity -icanon min 100 time 1
 
 trap "rm -f $outpipe" EXIT
 trap "rm -f $inpipe" EXIT
