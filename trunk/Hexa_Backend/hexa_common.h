@@ -30,6 +30,9 @@
 using namespace std;
 
 #include "my_types.h"
+
+#include "commandcontainer.h"
+
 #include "servo.h"
 #include "joint.h"
 #include "leg.h"
@@ -37,4 +40,5 @@ using namespace std;
 #include "hip.h"
 #include "bodypart.h"
 #include "hipgroup.h"
+
 

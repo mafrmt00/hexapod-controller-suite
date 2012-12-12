@@ -18,6 +18,8 @@ public:
 
 	int AddHip(CBodyPart* pHip);
 
+	int ExecuteCommand(CCommandContainer &Command );
+
 	int SetPosition(double dPosition_X, double dPosition_Y, double dPosition_Z);
 
 	int SetPosition_X(double dPosition_X);

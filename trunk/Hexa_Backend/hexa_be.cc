@@ -515,14 +515,33 @@ void calibration(void)
 
 int main (int argc, char **argv)
 {
+    extern char *optarg;
+    extern int optind, optopt;
+
 	int c;
 	bool cflag = false;
 	bool tflag = false;
 	
-	while ((c = getopt (argc, argv, "ct")) != -1)	
+	char *cSerialPort = NULL;
+
+	while ((c = getopt (argc, argv, "s:ct")) != -1)
 	{
 		switch (c)
 		{
+			//Set Serial Port to be used
+			case 's':
+				cSerialPort = optarg;
+
+				if(cSerialPort == NULL)
+				{
+					cout << "Error: Option -s needs a parameter /dev/tty0 for example." << endl;
+				}
+				else
+				{
+					cout << "Using serial port " << cSerialPort << endl;
+				}
+				break;
+
 			case 'c':
 				cflag = true;
 				break;

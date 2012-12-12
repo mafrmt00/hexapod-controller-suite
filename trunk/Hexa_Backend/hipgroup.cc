@@ -182,6 +182,31 @@ int CBody::SetPosition(double dPosition_X, double dPosition_Y, double dPosition_
 	return iReturnValue;
 }
 
+int CBody::ExecuteCommand(CCommandContainer &Command)
+{
+	int iReturnValue = 0;
+
+	switch(Command.GetCommand())
+	{
+		case eCoCo_SetPosition_X:
+			SetPosition_X(Command.GetParam01());
+			break;
+
+		case eCoCo_SetPosition_Y:
+			SetPosition_Y(Command.GetParam01());
+			break;
+
+		case eCoCo_SetPosition_Z:
+			SetPosition_Z(Command.GetParam01());
+			break;
+
+		default:
+			break;
+	}
+
+	return iReturnValue;
+}
+
 int CBody::GetSSC32String(stringstream& sConf)
 {
 	int iReturnValue = 0;
