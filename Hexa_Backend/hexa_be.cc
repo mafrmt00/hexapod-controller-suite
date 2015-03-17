@@ -518,6 +518,8 @@ int main (int argc, char **argv)
     extern char *optarg;
     extern int optind, optopt;
 
+	cout << "Welcome. Hexapod Initializing" << endl;	
+	
 	int c;
 	bool cflag = false;
 	bool tflag = false;
