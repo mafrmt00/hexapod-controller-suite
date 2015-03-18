@@ -526,10 +526,19 @@ int main (int argc, char **argv)
 	
 	char *cSerialPort = NULL;
 
-	while ((c = getopt (argc, argv, "s:ct")) != -1)
+	while ((c = getopt (argc, argv, "hs:ct")) != -1)
 	{
 		switch (c)
 		{
+			//Print short Help
+			case 'h':
+				cout << "Usage:" << endl;
+				cout << "-h This Printout." << endl;
+				cout << "-s Select Serial Port,  -s /dev/tty0 for example." << endl;
+				cout << "-t Execute Test Function." << endl;
+				cout << "-c Execute Calibration Function." << endl;
+				break;
+			
 			//Set Serial Port to be used
 			case 's':
 				cSerialPort = optarg;
@@ -558,14 +567,22 @@ int main (int argc, char **argv)
 		}
 	}
 	
+	if (cSerialPort == NULL)
+	{
+		cout << "Error:  Serial Port not set, please use Option -s /dev/tty0 for example." << endl;
+		return 0;
+	}
+	
 	if (tflag)
 	{
+		cout << "Executing Test function." << endl;
 		testbench();
 		return 1;
 	}
 	
 	if (cflag)
 	{
+		cout << "Executing Calibration function." << endl;
 		calibration();
 		return 1;
 	}	
